@@ -1,29 +1,28 @@
 import Link from "next/link";
 import { labs } from "@/lib/labs";
 
-export default function Home() {
+export default function LabsPage() {
   return (
     <main className="min-h-screen bg-background px-6 py-8 text-foreground">
-      <section className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl flex-col">
+      <section className="mx-auto max-w-6xl">
         <header className="flex items-center justify-between border-b border-white/10 pb-5">
-          <p className="text-sm uppercase text-muted">C4 Motion Lab</p>
           <Link
-            href="/labs"
+            href="/"
             className="text-sm text-muted transition hover:text-foreground"
           >
-            Labs index
+            C4 Motion Lab
           </Link>
+          <span className="text-sm text-muted">{labs.length} labs</span>
         </header>
 
-        <div className="grid flex-1 content-center gap-12 py-16 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid gap-10 py-16 lg:grid-cols-[360px_1fr]">
           <div>
-            <h1 className="max-w-3xl text-5xl font-semibold leading-none md:text-7xl">
-              Spatial web motion lab.
+            <p className="text-sm uppercase text-muted">Labs index</p>
+            <h1 className="mt-4 text-5xl font-semibold leading-none">
+              Scroll-based 3D studies.
             </h1>
-
-            <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
-              A clean Next.js workspace for learning React Three Fiber, Drei,
-              GSAP ScrollTrigger, Lenis, and premium scroll-based 3D design.
+            <p className="mt-6 text-lg leading-8 text-muted">
+              Minimal route scaffolds for focused motion experiments.
             </p>
           </div>
 
