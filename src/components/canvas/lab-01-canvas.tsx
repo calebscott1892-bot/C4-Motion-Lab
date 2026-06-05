@@ -9,9 +9,11 @@ type Lab01CanvasProps = {
 };
 
 const cameraSettings = {
-  position: [0, 0, 7] as [number, number, number],
-  fov: 42,
+  position: [0, 0, 7.4] as [number, number, number],
+  fov: 38,
 };
+
+const dprSettings = [1, 1.5] as [number, number];
 
 const glSettings = {
   alpha: true,
@@ -24,20 +26,24 @@ export function Lab01Canvas({ progress, reducedMotion }: Lab01CanvasProps) {
     <Canvas
       aria-hidden
       camera={cameraSettings}
-      dpr={[1, 1.5]}
+      dpr={dprSettings}
       frameloop={reducedMotion ? "demand" : "always"}
       gl={glSettings}
     >
-      <ambientLight intensity={0.62} />
-      <directionalLight position={[3.5, 4.5, 5]} intensity={2.4} />
-      <pointLight color="#7ea8ff" position={[-3, 2.4, 3.2]} intensity={8.5} />
-      <pointLight color="#f4f1e8" position={[2.8, -2, 3]} intensity={2.2} />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[3.8, 4.2, 5]} intensity={2.05} />
+      <pointLight color="#9eb3d6" position={[-3, 2.2, 3.4]} intensity={4.8} />
+      <pointLight color="#f4f1e8" position={[2.8, -2.4, 3.2]} intensity={1.35} />
 
       <Lab01Object progress={progress} reducedMotion={reducedMotion} />
 
-      <mesh position={[0, -2.22, -0.35]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[3.4, 64]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.035} />
+      <mesh
+        position={[0, -2.2, -0.55]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        scale={[1.9, 0.32, 1]}
+      >
+        <circleGeometry args={[2.25, 64]} />
+        <meshBasicMaterial color="#d7dde8" transparent opacity={0.045} />
       </mesh>
     </Canvas>
   );

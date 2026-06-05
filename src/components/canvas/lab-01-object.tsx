@@ -17,6 +17,7 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
   const groupRef = useRef<Group>(null);
   const coreMaterialRef = useRef<MeshStandardMaterial>(null);
   const accentMaterialRef = useRef<MeshStandardMaterial>(null);
+  const nodeMaterialRef = useRef<MeshStandardMaterial>(null);
   const elapsedRef = useRef(0);
 
   const stateColors = useMemo(
@@ -50,8 +51,8 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
 
     const from = lab01States[fromIndex].transform;
     const to = lab01States[toIndex].transform;
-    const idle = reducedMotion ? 0 : Math.sin(elapsedRef.current * 0.72) * 0.07;
-    const damp = reducedMotion ? 8 : 4.6;
+    const idle = reducedMotion ? 0 : Math.sin(elapsedRef.current * 0.42) * 0.035;
+    const damp = reducedMotion ? 8 : 2.85;
 
     group.position.x = MathUtils.damp(
       group.position.x,
@@ -82,7 +83,7 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
     group.rotation.y = MathUtils.damp(
       group.rotation.y,
       MathUtils.lerp(from.rotation[1], to.rotation[1], localProgress) +
-        (reducedMotion ? 0 : elapsedRef.current * 0.08),
+        (reducedMotion ? 0 : elapsedRef.current * 0.026),
       damp,
       delta,
     );
@@ -107,62 +108,113 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
       localProgress,
     );
     coreMaterialRef.current?.color.lerp(colorTarget, 0.08);
-    coreMaterialRef.current?.emissive.lerp(colorTarget, 0.04);
-    accentMaterialRef.current?.color.lerp(colorTarget, 0.06);
+    coreMaterialRef.current?.emissive.lerp(colorTarget, 0.025);
+    accentMaterialRef.current?.color.lerp(colorTarget, 0.045);
+    nodeMaterialRef.current?.color.lerp(colorTarget, 0.055);
   });
 
   return (
     <group ref={groupRef}>
-      <mesh>
-        <boxGeometry args={[1.42, 1.42, 1.42]} />
+      <mesh position={[-0.12, 0.08, -0.22]} rotation={[0, 0, 0.02]}>
+        <boxGeometry args={[1.34, 1.88, 0.08]} />
+        <meshStandardMaterial
+          color="#35404e"
+          metalness={0.24}
+          roughness={0.52}
+          transparent
+          opacity={0.72}
+        />
+      </mesh>
+
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[1.18, 1.72, 0.44]} />
         <meshStandardMaterial
           ref={coreMaterialRef}
           color={lab01States[0].color}
           emissive={lab01States[0].color}
+          emissiveIntensity={0.035}
+          metalness={0.28}
+          roughness={0.34}
+        />
+      </mesh>
+
+      <mesh position={[0.42, -0.06, 0.28]}>
+        <boxGeometry args={[0.15, 1.54, 0.08]} />
+        <meshStandardMaterial
+          color="#e7ebf1"
+          metalness={0.18}
+          roughness={0.38}
+          transparent
+          opacity={0.72}
+        />
+      </mesh>
+
+      <mesh position={[-0.46, 0.04, 0.3]}>
+        <boxGeometry args={[0.05, 1.18, 0.07]} />
+        <meshStandardMaterial
+          color="#10151d"
+          metalness={0.34}
+          roughness={0.42}
+          transparent
+          opacity={0.86}
+        />
+      </mesh>
+
+      <mesh position={[0, -0.04, 0.38]}>
+        <boxGeometry args={[1.78, 0.035, 0.07]} />
+        <meshStandardMaterial
+          ref={accentMaterialRef}
+          color={lab01States[0].color}
+          emissive="#9eb3d6"
           emissiveIntensity={0.08}
-          metalness={0.38}
-          roughness={0.28}
+          metalness={0.16}
+          roughness={0.36}
         />
       </mesh>
 
       <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.95, 0.018, 16, 96]} />
+        <torusGeometry args={[1.78, 0.011, 16, 112]} />
         <meshStandardMaterial
-          ref={accentMaterialRef}
-          color={lab01States[0].color}
-          emissive="#7ea8ff"
-          emissiveIntensity={0.22}
+          color="#c6ceda"
+          emissive="#9eb3d6"
+          emissiveIntensity={0.045}
           metalness={0.18}
-          roughness={0.36}
+          roughness={0.48}
           transparent
-          opacity={0.48}
+          opacity={0.26}
         />
       </mesh>
 
       <mesh rotation={[0.2, Math.PI / 2, 0]}>
-        <torusGeometry args={[1.52, 0.012, 16, 96]} />
+        <torusGeometry args={[1.35, 0.008, 16, 96]} />
         <meshStandardMaterial
-          color="#f4f1e8"
+          color="#eef1f5"
           metalness={0.22}
-          roughness={0.42}
+          roughness={0.54}
           transparent
-          opacity={0.32}
+          opacity={0.16}
         />
       </mesh>
 
-      <mesh position={[1.92, 0, 0]}>
-        <sphereGeometry args={[0.09, 24, 24]} />
+      <mesh position={[1.76, -0.04, 0.38]}>
+        <sphereGeometry args={[0.075, 24, 24]} />
         <meshStandardMaterial
+          ref={nodeMaterialRef}
           color="#f4f1e8"
-          emissive="#7ea8ff"
-          emissiveIntensity={0.24}
+          emissive="#9eb3d6"
+          emissiveIntensity={0.14}
           roughness={0.22}
         />
       </mesh>
 
-      <mesh position={[-1.2, 1.18, 0.22]}>
-        <sphereGeometry args={[0.06, 20, 20]} />
-        <meshStandardMaterial color="#8aa6d8" roughness={0.26} />
+      <mesh position={[-1.08, 1.08, 0.12]}>
+        <sphereGeometry args={[0.045, 20, 20]} />
+        <meshStandardMaterial color="#8f9caf" roughness={0.34} />
+      </mesh>
+
+      <mesh position={[0.84, -1.03, 0.2]}>
+        <sphereGeometry args={[0.035, 20, 20]} />
+        <meshStandardMaterial color="#cfd7e3" roughness={0.34} />
       </mesh>
     </group>
   );

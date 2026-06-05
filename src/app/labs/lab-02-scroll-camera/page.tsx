@@ -1,6 +1,5 @@
-import { LabPlaceholder } from "@/components/sections/lab-placeholder";
-import { getLab } from "@/lib/labs";
+import { Lab02ScrollCamera as Lab02ScrollCameraSection } from "@/components/sections/lab-02-scroll-camera";
 
 export default function Lab02ScrollCamera() {
-  return <LabPlaceholder lab={getLab("lab-02-scroll-camera")!} />;
+  return <Lab02ScrollCameraSection />;
 }

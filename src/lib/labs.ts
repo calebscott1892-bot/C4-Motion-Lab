@@ -21,8 +21,8 @@ export const labs: Lab[] = [
     href: "/labs/lab-02-scroll-camera",
     number: "Lab 02",
     title: "Scroll Camera Journey",
-    description: "A route reserved for camera movement and scroll timing.",
-    status: "Setup placeholder",
+    description: "A depth-based camera path through the C4 process stages.",
+    status: "Interactive prototype",
   },
   {
     slug: "lab-03-exploded-object",
