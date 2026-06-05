@@ -1,6 +1,5 @@
-import { LabPlaceholder } from "@/components/sections/lab-placeholder";
-import { getLab } from "@/lib/labs";
+import { Lab01PinnedHero as Lab01PinnedHeroSection } from "@/components/sections/lab-01-pinned-hero";
 
 export default function Lab01PinnedHero() {
-  return <LabPlaceholder lab={getLab("lab-01-pinned-hero")!} />;
+  return <Lab01PinnedHeroSection />;
 }

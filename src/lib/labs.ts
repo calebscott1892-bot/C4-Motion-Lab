@@ -13,8 +13,8 @@ export const labs: Lab[] = [
     href: "/labs/lab-01-pinned-hero",
     number: "Lab 01",
     title: "Pinned 3D Hero",
-    description: "A focused starting point for pinned hero composition.",
-    status: "Setup placeholder",
+    description: "A scroll-responsive primitive hero with staged text panels.",
+    status: "Interactive prototype",
   },
   {
     slug: "lab-02-scroll-camera",
