@@ -37,8 +37,8 @@ export const labs: Lab[] = [
     href: "/labs/lab-04-3d-logo",
     number: "Lab 04",
     title: "3D Logo Hero",
-    description: "A route reserved for brand-driven 3D motion studies.",
-    status: "Setup placeholder",
+    description: "A premium C4-style mark intro driven by scroll and light.",
+    status: "Interactive prototype",
   },
   {
     slug: "lab-05-c4-story",

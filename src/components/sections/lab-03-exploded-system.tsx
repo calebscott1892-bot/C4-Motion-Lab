@@ -57,26 +57,34 @@ function Header() {
 
 function LayerList({
   activeLayerIndex,
+  finalReveal,
   labelReveal,
 }: {
   activeLayerIndex: number;
+  finalReveal: number;
   labelReveal: number;
 }) {
   return (
     <div className="hidden gap-3 lg:grid">
       {lab03Layers.map((layer, index) => {
         const isActive = index === activeLayerIndex;
-        const opacity = Math.min(1, 0.24 + labelReveal * 0.62 + (isActive ? 0.18 : 0));
+        const opacity = Math.min(
+          1,
+          0.24 + labelReveal * 0.54 + finalReveal * 0.18 + (isActive ? 0.2 : 0),
+        );
 
         return (
           <article
             key={layer.id}
             aria-current={isActive ? "step" : undefined}
-            className="border-l bg-[#050609]/72 py-3 pl-4 pr-4 backdrop-blur-md transition duration-500"
+            className="border-l border-t py-3 pl-4 pr-4 backdrop-blur-md transition duration-500"
             style={{
+              backgroundColor: isActive
+                ? "rgba(5,6,9,0.86)"
+                : "rgba(5,6,9,0.7)",
               borderColor: isActive ? layer.accent : "rgba(255,255,255,0.12)",
               opacity,
-              transform: `translateX(${(1 - labelReveal) * 18}px)`,
+              transform: `translateX(${(1 - labelReveal) * 14}px)`,
             }}
           >
             <p className="text-[0.68rem] uppercase tracking-[0.16em] text-muted">
@@ -89,6 +97,28 @@ function LayerList({
           </article>
         );
       })}
+    </div>
+  );
+}
+
+function FinalOutcome({ finalReveal }: { finalReveal: number }) {
+  return (
+    <div
+      aria-hidden={finalReveal < 0.5}
+      className="mt-7 max-w-sm border-l border-white/18 bg-[#050609]/72 py-3 pl-4 pr-3 backdrop-blur-sm transition duration-700"
+      style={{
+        opacity: finalReveal,
+        transform: `translateY(${(1 - finalReveal) * 12}px)`,
+        visibility: finalReveal > 0.02 ? "visible" : "hidden",
+      }}
+    >
+      <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+        Commercial endpoint
+      </p>
+      <p className="mt-2 text-sm leading-6 text-foreground">
+        One connected growth layer, built to launch, measure, automate, and
+        follow up.
+      </p>
     </div>
   );
 }
@@ -126,11 +156,11 @@ function Lab03ReducedMotionFallback() {
               Reduced motion
             </p>
             <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-[0.98] md:text-6xl">
-              C4 builds the whole growth layer.
+              C4 builds the full growth layer.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-muted md:text-lg md:leading-8">
-              A calm reference view of the same service stack, with every layer
-              readable at once.
+              One connected service stack for identity, interface, search,
+              workflows, reporting, and client follow-up.
             </p>
           </div>
 
@@ -202,20 +232,22 @@ export function Lab03ExplodedSystem() {
                 </p>
                 <h1 className="mt-5 max-w-xl text-5xl font-semibold leading-[0.98] md:text-6xl">
                   {isFinal
-                    ? "C4 builds the whole growth layer."
+                    ? "C4 builds the full growth layer."
                     : "One system. Six growth layers."}
                 </h1>
                 <p className="mt-6 max-w-sm text-base leading-7 text-muted md:text-lg md:leading-8">
                   {isFinal
-                    ? "Brand, website, search, workflows, reporting, and follow-up resolve into one commercially useful system."
+                    ? "From first impression to follow-up, C4 connects brand, website, search, automation, analytics, and CRM into one revenue-ready system."
                     : "A complete digital growth stack starts as one aligned object, then separates into the parts C4 can design, build, and improve."}
                 </p>
+                <FinalOutcome finalReveal={finalReveal} />
               </div>
 
               <div className="hidden lg:block" />
 
               <LayerList
                 activeLayerIndex={activeLayerIndex}
+                finalReveal={finalReveal}
                 labelReveal={labelReveal}
               />
             </div>
@@ -226,7 +258,9 @@ export function Lab03ExplodedSystem() {
               <div className="max-w-5xl">
                 <div className="mb-4 flex items-center justify-between gap-4 text-xs uppercase text-muted md:justify-start md:gap-8">
                   <span>C4 Studios</span>
-                  <span>Growth layer diagram</span>
+                  <span>
+                    {isFinal ? "Full growth layer" : "Growth layer diagram"}
+                  </span>
                   <span>{progressLabel}</span>
                 </div>
                 <div className="h-px overflow-hidden bg-white/10">

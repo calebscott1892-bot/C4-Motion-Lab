@@ -20,7 +20,7 @@ type LayerTransform = {
   scale: number;
 };
 
-const layerDepthStep = 0.11;
+const layerDepthStep = 0.13;
 
 function clamp(value: number) {
   return Math.min(1, Math.max(0, value));
@@ -44,7 +44,8 @@ function getLayerTransform({
   const explode = smoothstep(sceneProgress, 0.2, 0.78);
   const finalSettle = smoothstep(sceneProgress, 0.82, 1);
   const centerIndex = 2.5;
-  const compactMultiplier = compact ? 0.64 : 1;
+  const compactMultiplier = compact ? 0.58 : 1;
+  const settleX = MathUtils.lerp(1, 0.88, finalSettle);
   const stackDepth = MathUtils.lerp(
     (layerIndex - centerIndex) * 0.014,
     (layerIndex - centerIndex) * layerDepthStep,
@@ -55,7 +56,7 @@ function getLayerTransform({
 
   return {
     position: [
-      layer.explodedPosition[0] * explode * compactMultiplier,
+      layer.explodedPosition[0] * explode * compactMultiplier * settleX,
       layer.explodedPosition[1] * explode * compactMultiplier * settleY,
       stackDepth + layer.explodedPosition[2] * explode * compactMultiplier * settleZ,
     ],
@@ -206,38 +207,87 @@ function LayerIcon({ layer }: { layer: Lab03Layer }) {
 function LayerSurface({ layer }: { layer: Lab03Layer }) {
   return (
     <>
+      <mesh position={[0.08, -0.08, -0.08]}>
+        <boxGeometry args={[2.38, 1.2, 0.035]} />
+        <meshBasicMaterial color="#020306" transparent opacity={0.46} />
+      </mesh>
+
       <mesh>
         <boxGeometry args={[2.36, 1.22, 0.07]} />
-        <meshStandardMaterial
-          color="#121820"
-          metalness={0.18}
-          opacity={0.72}
-          roughness={0.46}
+        <meshPhysicalMaterial
+          clearcoat={0.52}
+          clearcoatRoughness={0.48}
+          color="#111820"
+          metalness={0.1}
+          opacity={0.64}
+          roughness={0.28}
           transparent
         />
       </mesh>
+
       <mesh position={[0, 0, 0.045]}>
         <boxGeometry args={[2.18, 1.04, 0.018]} />
-        <meshStandardMaterial
+        <meshPhysicalMaterial
+          clearcoat={0.34}
+          clearcoatRoughness={0.62}
           color={layer.secondary}
-          metalness={0.14}
-          opacity={0.22}
-          roughness={0.52}
+          metalness={0.08}
+          opacity={0.17}
+          roughness={0.44}
           transparent
         />
       </mesh>
+
+      <mesh position={[-0.84, 0.16, 0.075]}>
+        <boxGeometry args={[0.46, 0.52, 0.014]} />
+        <meshBasicMaterial color={layer.secondary} transparent opacity={0.16} />
+      </mesh>
+
+      <mesh position={[0.44, 0.18, 0.076]}>
+        <boxGeometry args={[0.76, 0.06, 0.014]} />
+        <meshBasicMaterial color="#f2f0e8" transparent opacity={0.18} />
+      </mesh>
+
+      <mesh position={[0.32, -0.03, 0.077]}>
+        <boxGeometry args={[0.92, 0.045, 0.014]} />
+        <meshBasicMaterial color={layer.secondary} transparent opacity={0.13} />
+      </mesh>
+
       <mesh position={[0, 0.55, 0.075]}>
         <boxGeometry args={[2.32, 0.018, 0.018]} />
-        <meshBasicMaterial color={layer.accent} transparent opacity={0.42} />
+        <meshBasicMaterial color={layer.accent} transparent opacity={0.48} />
       </mesh>
+
+      <mesh position={[0, -0.55, 0.075]}>
+        <boxGeometry args={[1.72, 0.014, 0.014]} />
+        <meshBasicMaterial color={layer.secondary} transparent opacity={0.26} />
+      </mesh>
+
       <mesh position={[-1.14, 0, 0.075]}>
         <boxGeometry args={[0.018, 1.14, 0.018]} />
-        <meshBasicMaterial color={layer.accent} transparent opacity={0.28} />
+        <meshBasicMaterial color={layer.accent} transparent opacity={0.36} />
       </mesh>
-      <mesh position={[0.66, -0.4, 0.082]}>
+
+      <mesh position={[1.14, 0, 0.075]}>
+        <boxGeometry args={[0.014, 0.86, 0.014]} />
+        <meshBasicMaterial color={layer.secondary} transparent opacity={0.18} />
+      </mesh>
+
+      <mesh position={[0.66, -0.4, 0.084]}>
         <boxGeometry args={[0.72, 0.016, 0.014]} />
-        <meshBasicMaterial color="#f2f0e8" transparent opacity={0.3} />
+        <meshBasicMaterial color="#f2f0e8" transparent opacity={0.34} />
       </mesh>
+
+      <mesh position={[-1.12, 0.54, 0.092]}>
+        <sphereGeometry args={[0.032, 18, 18]} />
+        <meshStandardMaterial color={layer.accent} metalness={0.18} roughness={0.28} />
+      </mesh>
+
+      <mesh position={[1.12, -0.52, 0.092]}>
+        <sphereGeometry args={[0.027, 18, 18]} />
+        <meshStandardMaterial color={layer.secondary} metalness={0.14} roughness={0.34} />
+      </mesh>
+
       <LayerIcon layer={layer} />
     </>
   );
