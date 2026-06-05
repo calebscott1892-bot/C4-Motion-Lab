@@ -64,7 +64,7 @@ function StoryCopy({
   return (
     <article className="self-start pt-12 md:self-center md:pt-0">
       <p className="text-[0.7rem] uppercase tracking-normal text-muted">
-        C4 capability demo
+        C4 Studios brand-motion demo
       </p>
       <h1 className="mt-5 max-w-2xl text-4xl font-semibold leading-[0.99] sm:text-5xl md:text-6xl">
         {activeStep.title}
@@ -77,7 +77,7 @@ function StoryCopy({
         }}
       >
         {activeStepIndex === 0
-          ? "A static business website becomes a connected growth system for strategy, design, development, automation, and improvement."
+          ? "C4 Studios turns a static business website into a connected growth system for strategy, design, development, automation, and improvement."
           : activeStep.body}
       </p>
 

@@ -124,11 +124,74 @@ function StoryCameraRig({
   return null;
 }
 
+function BrandStroke({
+  args,
+  color,
+  opacity,
+  position,
+  radius,
+  rotation,
+}: {
+  args: VectorTuple;
+  color: string;
+  opacity: number;
+  position: VectorTuple;
+  radius?: number;
+  rotation?: VectorTuple;
+}) {
+  return (
+    <RoundedBox
+      args={args}
+      bevelSegments={5}
+      position={position}
+      radius={radius ?? Math.min(args[0], args[1]) * 0.22}
+      rotation={rotation}
+      smoothness={5}
+    >
+      <meshPhysicalMaterial
+        clearcoat={0.32}
+        clearcoatRoughness={0.56}
+        color={color}
+        metalness={0.08}
+        opacity={opacity}
+        roughness={0.36}
+        transparent
+      />
+    </RoundedBox>
+  );
+}
+
+function BrandRule({
+  args,
+  color = "#efe7d8",
+  opacity,
+  position,
+  rotation,
+}: {
+  args: VectorTuple;
+  color?: string;
+  opacity: number;
+  position: VectorTuple;
+  rotation?: VectorTuple;
+}) {
+  return (
+    <RoundedBox
+      args={args}
+      position={position}
+      radius={Math.min(args[0], args[1]) * 0.28}
+      rotation={rotation}
+    >
+      <meshBasicMaterial color={color} opacity={opacity} transparent />
+    </RoundedBox>
+  );
+}
+
 function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
   const assemble = smoothstep(progress, 0.08, 0.24);
   const resolve = smoothstep(progress, 0.64, 0.84);
-  const opacity = Math.max(0.18, 1 - assemble * 0.76 - resolve * 0.2);
-  const scale = MathUtils.lerp(1.08, 0.72, assemble) * MathUtils.lerp(1, 0.84, resolve);
+  const opacity = Math.max(0.24, 1 - assemble * 0.7 - resolve * 0.16);
+  const plateOpacity = Math.max(0.18, opacity * 0.42);
+  const scale = MathUtils.lerp(1.12, 0.76, assemble) * MathUtils.lerp(1, 0.88, resolve);
 
   return (
     <group
@@ -136,66 +199,121 @@ function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
       rotation={[0.02, MathUtils.lerp(-0.18, 0.08, progress), -0.012]}
       scale={scale}
     >
+      <RoundedBox args={[1.74, 1.12, 0.035]} position={[0.13, 0.01, -0.09]} radius={0.045}>
+        <meshPhysicalMaterial
+          clearcoat={0.18}
+          clearcoatRoughness={0.78}
+          color="#080d14"
+          metalness={0.03}
+          opacity={plateOpacity}
+          roughness={0.72}
+          transparent
+        />
+      </RoundedBox>
+
+      <BrandRule
+        args={[1.38, 0.012, 0.01]}
+        opacity={opacity * 0.2}
+        position={[0.14, 0.49, -0.045]}
+      />
+      <BrandRule
+        args={[0.012, 0.86, 0.01]}
+        color="#8794a5"
+        opacity={opacity * 0.17}
+        position={[-0.72, 0.02, -0.04]}
+      />
+      <BrandRule
+        args={[0.38, 0.012, 0.01]}
+        color="#cfd8e6"
+        opacity={opacity * 0.18}
+        position={[0.68, -0.48, -0.035]}
+      />
+
       <mesh rotation={[0, 0, Math.PI * 0.18]}>
-        <torusGeometry args={[0.52, 0.055, 24, 96, Math.PI * 1.52]} />
+        <torusGeometry args={[0.5, 0.058, 24, 96, Math.PI * 1.5]} />
+        <meshPhysicalMaterial
+          clearcoat={0.42}
+          clearcoatRoughness={0.52}
+          color="#f0e7d8"
+          metalness={0.06}
+          opacity={opacity}
+          roughness={0.32}
+          transparent
+        />
+      </mesh>
+
+      <mesh position={[-0.012, -0.012, -0.06]} rotation={[0, 0, Math.PI * 0.18]}>
+        <torusGeometry args={[0.505, 0.061, 18, 72, Math.PI * 1.5]} />
+        <meshBasicMaterial color="#1c2630" opacity={opacity * 0.28} transparent />
+      </mesh>
+
+      <mesh position={[0.39, 0.3, 0.035]}>
+        <sphereGeometry args={[0.055, 18, 18]} />
         <meshPhysicalMaterial
           clearcoat={0.34}
-          clearcoatRoughness={0.52}
-          color="#e9e1d1"
+          clearcoatRoughness={0.48}
+          color="#f4efe4"
           metalness={0.06}
           opacity={opacity}
-          roughness={0.34}
+          roughness={0.3}
           transparent
         />
       </mesh>
 
-      <RoundedBox args={[0.11, 0.92, 0.14]} position={[0.46, 0, 0.02]} radius={0.018}>
+      <mesh position={[0.28, -0.39, 0.032]}>
+        <sphereGeometry args={[0.05, 16, 16]} />
         <meshPhysicalMaterial
           clearcoat={0.3}
-          clearcoatRoughness={0.58}
-          color="#c8d0da"
-          metalness={0.08}
-          opacity={opacity}
-          roughness={0.36}
-          transparent
-        />
-      </RoundedBox>
-      <RoundedBox
-        args={[0.66, 0.1, 0.13]}
-        position={[0.17, 0.08, 0.04]}
-        radius={0.018}
-      >
-        <meshPhysicalMaterial
-          clearcoat={0.3}
-          clearcoatRoughness={0.6}
-          color="#8f9aa8"
+          clearcoatRoughness={0.5}
+          color="#cfd8e6"
           metalness={0.07}
           opacity={opacity}
-          roughness={0.38}
-          transparent
-        />
-      </RoundedBox>
-      <RoundedBox
-        args={[0.11, 0.78, 0.13]}
-        position={[-0.08, 0.22, 0.025]}
-        radius={0.018}
-        rotation={[0, 0, -0.55]}
-      >
-        <meshPhysicalMaterial
-          clearcoat={0.32}
-          clearcoatRoughness={0.54}
-          color="#ded8cd"
-          metalness={0.06}
-          opacity={opacity}
           roughness={0.34}
           transparent
         />
-      </RoundedBox>
-
-      <mesh position={[0.25, -0.42, 0.07]}>
-        <sphereGeometry args={[0.055, 18, 18]} />
-        <meshPhysicalMaterial color="#d2d7df" opacity={opacity} roughness={0.34} transparent />
       </mesh>
+
+      <BrandStroke
+        args={[0.12, 0.86, 0.14]}
+        color="#d9e1ec"
+        opacity={opacity}
+        position={[0.5, -0.02, 0.03]}
+      />
+      <BrandStroke
+        args={[0.62, 0.105, 0.13]}
+        color="#8794a5"
+        opacity={opacity * 0.95}
+        position={[0.22, 0.08, 0.06]}
+        radius={0.018}
+      />
+      <BrandStroke
+        args={[0.11, 0.72, 0.13]}
+        color="#eee8dc"
+        opacity={opacity}
+        position={[-0.02, 0.2, 0.045]}
+        radius={0.018}
+        rotation={[0, 0, -0.55]}
+      />
+      <BrandStroke
+        args={[0.18, 0.105, 0.09]}
+        color="#566273"
+        opacity={opacity * 0.82}
+        position={[0.51, -0.43, 0.02]}
+        radius={0.016}
+      />
+
+      <BrandRule
+        args={[0.34, 0.012, 0.012]}
+        color="#efe7d8"
+        opacity={opacity * 0.24}
+        position={[-0.44, -0.58, 0.035]}
+      />
+      <BrandRule
+        args={[0.012, 0.28, 0.012]}
+        color="#8f9aa8"
+        opacity={opacity * 0.22}
+        position={[0.69, 0.34, 0.04]}
+      />
     </group>
   );
 }

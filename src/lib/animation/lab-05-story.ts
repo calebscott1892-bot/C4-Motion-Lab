@@ -18,7 +18,7 @@ export type Lab05ProcessCard = {
 export const lab05StorySteps: Lab05StoryStep[] = [
   {
     accent: "#efe7d8",
-    body: "A static business website sits in frame before C4 turns it into the operating layer behind growth.",
+    body: "A static business website sits in frame before C4 Studios turns it into the operating layer behind growth.",
     id: "signature",
     label: "Signature",
     progress: 0,
