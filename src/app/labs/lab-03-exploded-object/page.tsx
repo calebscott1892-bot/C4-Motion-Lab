@@ -1,6 +1,5 @@
-import { LabPlaceholder } from "@/components/sections/lab-placeholder";
-import { getLab } from "@/lib/labs";
+import { Lab03ExplodedSystem as Lab03ExplodedSystemSection } from "@/components/sections/lab-03-exploded-system";
 
 export default function Lab03ExplodedObject() {
-  return <LabPlaceholder lab={getLab("lab-03-exploded-object")!} />;
+  return <Lab03ExplodedSystemSection />;
 }

@@ -29,8 +29,8 @@ export const labs: Lab[] = [
     href: "/labs/lab-03-exploded-object",
     number: "Lab 03",
     title: "Exploded Object Diagram",
-    description: "A route reserved for layered object decomposition.",
-    status: "Setup placeholder",
+    description: "A scroll-separated service-system diagram for C4 growth layers.",
+    status: "Interactive prototype",
   },
   {
     slug: "lab-04-3d-logo",

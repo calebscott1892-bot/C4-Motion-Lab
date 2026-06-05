@@ -4,6 +4,7 @@ import { ScrollControls, useScroll } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import { MathUtils } from "three";
 import { Lab02CameraJourney } from "@/components/canvas/lab-02-camera-journey";
 import { Lab02StageObject } from "@/components/canvas/lab-02-stage-object";
 import { lab02Stages } from "@/lib/animation/lab-02-stages";
@@ -19,6 +20,7 @@ const cameraSettings = {
 };
 
 const dprSettings = [1, 1.5] as [number, number];
+const lastStageIndex = lab02Stages.length - 1;
 
 const glSettings = {
   alpha: true,
@@ -26,26 +28,45 @@ const glSettings = {
   powerPreference: "high-performance" as const,
 };
 
+function SpatialGuide() {
+  return (
+    <group>
+      <mesh position={[0, -1.34, -15.1]}>
+        <boxGeometry args={[0.014, 0.014, 35]} />
+        <meshBasicMaterial color="#d8dee9" transparent opacity={0.13} />
+      </mesh>
+
+      <mesh position={[0, -1.38, -15.1]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[6.2, 96]} />
+        <meshBasicMaterial color="#d8dee9" transparent opacity={0.014} />
+      </mesh>
+
+      {lab02Stages.map((stage) => (
+        <mesh
+          key={stage.id}
+          position={[stage.position[0] * 0.34, -1.3, stage.position[2]]}
+        >
+          <boxGeometry args={[0.52, 0.01, 0.01]} />
+          <meshBasicMaterial color={stage.accent} transparent opacity={0.2} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 function Lab02World({ reducedMotion = false }: Lab02SceneProps) {
   return (
     <>
       <color attach="background" args={["#050609"]} />
-      <fog attach="fog" args={["#050609", 8, 32]} />
+      <fog attach="fog" args={["#050609", 7, 36]} />
 
-      <ambientLight intensity={0.42} />
-      <directionalLight position={[3, 4, 5]} intensity={1.8} />
-      <pointLight color="#aebbd0" position={[-3, 2, 4]} intensity={3.2} />
-      <pointLight color="#eef1f5" position={[2, -2, 1]} intensity={1.1} />
+      <ambientLight intensity={0.34} />
+      <directionalLight position={[3.5, 4.5, 5.5]} intensity={1.65} />
+      <pointLight color="#aebbd0" position={[-3.4, 2.4, 3.2]} intensity={3.1} />
+      <pointLight color="#eef1f5" position={[2.6, -1.9, -8]} intensity={1.35} />
+      <pointLight color="#6e7888" position={[-2, -1.5, -20]} intensity={1.8} />
 
-      <mesh position={[0, -1.28, -12.5]} rotation={[Math.PI / 2, 0, 0]}>
-        <boxGeometry args={[0.018, 0.018, 29]} />
-        <meshBasicMaterial color="#d8dee9" transparent opacity={0.16} />
-      </mesh>
-
-      <mesh position={[0, -1.32, -12.5]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[5.8, 96]} />
-        <meshBasicMaterial color="#d8dee9" transparent opacity={0.018} />
-      </mesh>
+      <SpatialGuide />
 
       {lab02Stages.map((stage) => (
         <Lab02StageObject
@@ -65,9 +86,10 @@ function Lab02ScrollStateBridge({
   const activeStageRef = useRef(0);
 
   useFrame(() => {
+    const progress = MathUtils.smoothstep(scroll.offset, 0, 1);
     const nextStageIndex = Math.min(
-      lab02Stages.length - 1,
-      Math.floor(scroll.offset * lab02Stages.length),
+      lastStageIndex,
+      Math.round(progress * lastStageIndex),
     );
 
     if (nextStageIndex !== activeStageRef.current) {

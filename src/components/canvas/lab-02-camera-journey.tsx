@@ -20,21 +20,23 @@ export function Lab02CameraJourney() {
     const toIndex = Math.min(lastStageIndex, fromIndex + 1);
     const localProgress = MathUtils.smoothstep(stageProgress - fromIndex, 0, 1);
 
-    const from = lab02Stages[fromIndex].position;
-    const to = lab02Stages[toIndex].position;
-    const focusX = MathUtils.lerp(from[0], to[0], localProgress);
-    const focusY = MathUtils.lerp(from[1], to[1], localProgress);
-    const focusZ = MathUtils.lerp(from[2], to[2], localProgress);
+    const fromCamera = lab02Stages[fromIndex].camera;
+    const toCamera = lab02Stages[toIndex].camera;
 
     cameraTarget.set(
-      focusX * 0.28 + Math.sin(progress * Math.PI * 2) * 0.32,
-      focusY * 0.34 + 0.12,
-      MathUtils.lerp(6.2, lab02Stages[lastStageIndex].position[2] + 4.8, progress),
+      MathUtils.lerp(fromCamera.position[0], toCamera.position[0], localProgress) +
+        Math.sin(progress * Math.PI * 2) * 0.08,
+      MathUtils.lerp(fromCamera.position[1], toCamera.position[1], localProgress),
+      MathUtils.lerp(fromCamera.position[2], toCamera.position[2], localProgress),
     );
 
-    lookTarget.set(focusX * 0.7, focusY * 0.5, focusZ - 0.9);
+    lookTarget.set(
+      MathUtils.lerp(fromCamera.lookAt[0], toCamera.lookAt[0], localProgress),
+      MathUtils.lerp(fromCamera.lookAt[1], toCamera.lookAt[1], localProgress),
+      MathUtils.lerp(fromCamera.lookAt[2], toCamera.lookAt[2], localProgress),
+    );
 
-    camera.position.lerp(cameraTarget, 1 - Math.exp(-delta * 2.9));
+    camera.position.lerp(cameraTarget, 1 - Math.exp(-delta * 2.65));
     camera.lookAt(lookTarget);
   });
 

@@ -21,7 +21,7 @@ function Lab02ReducedMotionFallback() {
         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-3.5rem)] max-w-7xl items-end gap-10 pb-10 pt-24 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-xs uppercase text-muted">Reduced motion</p>
-            <h1 className="mt-5 max-w-xl text-5xl font-semibold leading-[0.95] md:text-7xl">
+            <h1 className="mt-5 max-w-xl text-5xl font-semibold leading-[0.98] md:text-6xl">
               A static map of the C4 journey.
             </h1>
           </div>
@@ -91,8 +91,8 @@ export function Lab02ScrollCamera() {
         <Lab02Scene onStageChange={setActiveStageIndex} />
 
         <div className="pointer-events-none absolute inset-0 z-10 mx-auto grid max-w-7xl grid-rows-[1fr_auto] px-6 pb-24 pt-24 md:px-10 md:pb-10">
-          <div className="grid items-center gap-8 lg:grid-cols-[320px_1fr_410px]">
-            <div className="hidden space-y-5 lg:block">
+          <div className="grid items-center gap-8 lg:grid-cols-[300px_1fr_430px]">
+            <div className="hidden space-y-6 lg:block">
               {lab02Stages.map((stage, index) => {
                 const isActive = index === activeStageIndex;
 
@@ -100,16 +100,16 @@ export function Lab02ScrollCamera() {
                   <article
                     key={stage.id}
                     aria-current={isActive ? "step" : undefined}
-                    className={`border-l py-1 pl-5 transition duration-500 ${
+                    className={`border-l py-1.5 pl-5 transition duration-700 ${
                       isActive ? "text-foreground" : "border-white/10 text-muted"
                     }`}
-                    style={{ borderColor: isActive ? activeStage.accent : undefined }}
+                    style={{ borderColor: isActive ? stage.accent : undefined }}
                   >
-                    <p className="text-xs uppercase">
+                    <p className="text-[0.68rem] uppercase tracking-[0.16em]">
                       {stage.index} / {stage.label}
                     </p>
                     <h2
-                      className={`mt-2 text-lg font-medium leading-tight ${
+                      className={`mt-2 max-w-52 text-lg font-medium leading-tight ${
                         isActive ? "opacity-100" : "opacity-45"
                       }`}
                     >
@@ -123,15 +123,15 @@ export function Lab02ScrollCamera() {
             <div />
 
             <article
-              className="self-end border-l bg-[#050609]/90 py-4 pl-5 pr-4 backdrop-blur-sm lg:self-center lg:bg-[#050609]/88"
+              className="self-end border-l bg-[#050609]/86 py-5 pl-5 pr-4 backdrop-blur-md lg:self-center lg:bg-[#050609]/80 lg:py-6 lg:pl-6"
               style={{ borderColor: activeStage.accent }}
             >
-              <p className="text-xs uppercase text-muted">
+              <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
                 <span className="font-mono">{activeStage.index}</span>
                 <span className="mx-2 text-white/25">/</span>
                 {activeStage.label}
               </p>
-              <h1 className="mt-4 text-4xl font-semibold leading-[0.95] md:text-6xl">
+              <h1 className="mt-4 max-w-md text-4xl font-semibold leading-[0.98] md:text-6xl">
                 {activeStage.title}
               </h1>
               <p className="mt-5 max-w-sm text-base leading-7 text-muted md:text-lg md:leading-8">
@@ -143,7 +143,9 @@ export function Lab02ScrollCamera() {
 
         <div className="pointer-events-none absolute bottom-7 left-6 right-6 z-20 hidden items-end justify-between text-xs uppercase text-muted md:flex md:left-10 md:right-10">
           <span>C4 spatial process</span>
-          <span>Wheel / trackpad to travel depth</span>
+          <span>
+            Stage {activeStage.index} / {activeStage.label}
+          </span>
         </div>
       </section>
     </main>
