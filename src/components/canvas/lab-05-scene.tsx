@@ -52,10 +52,10 @@ function lerpTuple(from: VectorTuple, to: VectorTuple, amount: number): VectorTu
 }
 
 function getLayerPosition(index: number, progress: number): VectorTuple {
-  const assemble = smoothstep(progress, 0.16, 0.3);
-  const split = smoothstep(progress, 0.34, 0.52);
-  const connect = smoothstep(progress, 0.52, 0.68);
-  const resolve = smoothstep(progress, 0.72, 0.9);
+  const assemble = smoothstep(progress, 0.1, 0.23);
+  const split = smoothstep(progress, 0.28, 0.44);
+  const connect = smoothstep(progress, 0.44, 0.6);
+  const resolve = smoothstep(progress, 0.64, 0.84);
   const centeredIndex = index - 2;
   const angle = -Math.PI * 0.82 + index * (Math.PI * 0.41);
 
@@ -66,19 +66,19 @@ function getLayerPosition(index: number, progress: number): VectorTuple {
     centeredIndex * 0.045,
   ];
   const splitPosition: VectorTuple = [
-    centeredIndex * 0.12,
-    centeredIndex * -0.32,
-    centeredIndex * 0.14,
+    centeredIndex * 0.15,
+    centeredIndex * -0.36,
+    centeredIndex * 0.16,
   ];
   const ecosystem: VectorTuple = [
-    Math.cos(angle) * 1.12,
-    Math.sin(angle) * 0.58,
-    -0.06 + Math.sin(angle) * 0.15,
+    Math.cos(angle) * 1.18,
+    Math.sin(angle) * 0.62,
+    -0.05 + Math.sin(angle) * 0.16,
   ];
   const resolved: VectorTuple = [
-    ecosystem[0] * 0.66 + 0.26,
-    ecosystem[1] * 0.48,
-    ecosystem[2] - 0.04,
+    ecosystem[0] * 0.72 + 0.34,
+    ecosystem[1] * 0.52,
+    ecosystem[2] - 0.06,
   ];
 
   return lerpTuple(
@@ -100,15 +100,15 @@ function StoryCameraRig({
   const lookTarget = useMemo(() => new Vector3(), []);
 
   useFrame(({ camera }, delta) => {
-    const approach = smoothstep(progress, 0.06, 0.24);
-    const split = smoothstep(progress, 0.34, 0.58);
-    const resolve = smoothstep(progress, 0.72, 0.9);
+    const approach = smoothstep(progress, 0.03, 0.18);
+    const split = smoothstep(progress, 0.28, 0.5);
+    const resolve = smoothstep(progress, 0.64, 0.84);
 
     targetPosition.set(
-      compact ? 0 : MathUtils.lerp(0, 0.34, resolve),
-      MathUtils.lerp(compact ? 0.1 : 0.04, compact ? -0.05 : 0.12, split),
-      MathUtils.lerp(compact ? 9.35 : 8.15, compact ? 7.65 : 5.82, approach) +
-        resolve * 0.62,
+      compact ? 0 : MathUtils.lerp(0, 0.46, resolve),
+      MathUtils.lerp(compact ? 0.1 : 0.04, compact ? -0.04 : 0.14, split),
+      MathUtils.lerp(compact ? 9.35 : 8.15, compact ? 7.55 : 5.72, approach) +
+        resolve * 0.68,
     );
 
     lookTarget.set(
@@ -125,10 +125,10 @@ function StoryCameraRig({
 }
 
 function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const assemble = smoothstep(progress, 0.16, 0.34);
-  const resolve = smoothstep(progress, 0.72, 0.9);
-  const opacity = Math.max(0.14, 1 - assemble * 0.72 - resolve * 0.18);
-  const scale = MathUtils.lerp(1, 0.7, assemble) * MathUtils.lerp(1, 0.82, resolve);
+  const assemble = smoothstep(progress, 0.08, 0.24);
+  const resolve = smoothstep(progress, 0.64, 0.84);
+  const opacity = Math.max(0.18, 1 - assemble * 0.76 - resolve * 0.2);
+  const scale = MathUtils.lerp(1.08, 0.72, assemble) * MathUtils.lerp(1, 0.84, resolve);
 
   return (
     <group
@@ -201,20 +201,24 @@ function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
 }
 
 function InterfaceShell({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const assemble = smoothstep(progress, 0.18, 0.32);
-  const split = smoothstep(progress, 0.36, 0.56);
-  const resolve = smoothstep(progress, 0.72, 0.9);
-  const opacity = assemble * (1 - split * 0.72) * (1 - resolve * 0.34);
+  const assemble = smoothstep(progress, 0.08, 0.24);
+  const split = smoothstep(progress, 0.28, 0.46);
+  const resolve = smoothstep(progress, 0.64, 0.84);
+  const staticSite = 1 - smoothstep(progress, 0.08, 0.28);
+  const opacity = Math.max(
+    staticSite * 0.52,
+    assemble * (1 - split * 0.72) * (1 - resolve * 0.34),
+  );
 
   return (
-    <group position={[0, -0.02, -0.2]} scale={[1, 1, 1]}>
+    <group position={[0, MathUtils.lerp(-0.04, -0.01, assemble), -0.22]} scale={[1, 1, 1]}>
       <RoundedBox args={[2.16, 1.28, 0.052]} radius={0.04}>
         <meshPhysicalMaterial
           clearcoat={0.24}
           clearcoatRoughness={0.74}
           color="#10151d"
           metalness={0.04}
-          opacity={0.08 + opacity * 0.24}
+          opacity={0.14 + opacity * 0.24}
           roughness={0.64}
           transparent
         />
@@ -246,13 +250,13 @@ function GrowthLayer({
   progress: number;
 }) {
   const card = lab05ProcessCards[cardIndex];
-  const assemble = smoothstep(progress, 0.16, 0.3);
-  const split = smoothstep(progress, 0.34, 0.52);
-  const resolve = smoothstep(progress, 0.72, 0.9);
+  const assemble = smoothstep(progress, 0.1, 0.23);
+  const split = smoothstep(progress, 0.28, 0.44);
+  const resolve = smoothstep(progress, 0.64, 0.84);
   const position = getLayerPosition(cardIndex, progress);
-  const width = MathUtils.lerp(0.48, 1.36, assemble) * MathUtils.lerp(1, 0.58, resolve);
-  const height = MathUtils.lerp(0.08, 0.18, assemble) * MathUtils.lerp(1, 0.86, resolve);
-  const opacity = Math.min(0.88, 0.08 + assemble * 0.68 + split * 0.12);
+  const width = MathUtils.lerp(0.48, 1.42, assemble) * MathUtils.lerp(1, 0.62, resolve);
+  const height = MathUtils.lerp(0.08, 0.2, assemble) * MathUtils.lerp(1, 0.9, resolve);
+  const opacity = Math.min(0.9, 0.02 + assemble * 0.74 + split * 0.14);
 
   return (
     <group position={position}>
@@ -324,25 +328,25 @@ function Connector({
 }
 
 function EcosystemConnectors({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const connect = smoothstep(progress, 0.52, 0.7);
-  const resolve = smoothstep(progress, 0.72, 0.9);
-  const hub: VectorTuple = [resolve * 0.18, 0, -0.05];
-  const opacity = connect * MathUtils.lerp(0.18, 0.12, resolve);
+  const connect = smoothstep(progress, 0.44, 0.62);
+  const resolve = smoothstep(progress, 0.64, 0.84);
+  const hub: VectorTuple = [resolve * 0.28, 0, -0.05];
+  const opacity = connect * MathUtils.lerp(0.22, 0.14, resolve);
 
   return (
     <group>
       <group position={hub} scale={1 + resolve * 0.12}>
         <mesh>
-          <torusGeometry args={[0.24 + connect * 0.12, 0.004, 8, 72]} />
-          <meshBasicMaterial color="#efe7d8" opacity={connect * 0.16} transparent />
+          <torusGeometry args={[0.24 + connect * 0.16, 0.004, 8, 72]} />
+          <meshBasicMaterial color="#efe7d8" opacity={connect * 0.2} transparent />
         </mesh>
         <mesh rotation={[0.22, 0.14, 0.18]}>
-          <torusGeometry args={[0.43 + connect * 0.08, 0.003, 8, 72]} />
-          <meshBasicMaterial color="#7f8ea1" opacity={connect * 0.1} transparent />
+          <torusGeometry args={[0.43 + connect * 0.1, 0.003, 8, 72]} />
+          <meshBasicMaterial color="#7f8ea1" opacity={connect * 0.12} transparent />
         </mesh>
       </group>
       <mesh position={hub}>
-        <sphereGeometry args={[0.045 + connect * 0.035, 20, 20]} />
+        <sphereGeometry args={[0.05 + connect * 0.042, 20, 20]} />
         <meshPhysicalMaterial
           clearcoat={0.24}
           clearcoatRoughness={0.52}
@@ -365,34 +369,34 @@ function EcosystemConnectors({ progress }: Pick<Lab05SceneProps, "progress">) {
 }
 
 function ResolutionPlate({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const resolve = smoothstep(progress, 0.72, 0.92);
+  const resolve = smoothstep(progress, 0.64, 0.86);
 
   return (
-    <group position={[0.18, -0.02, -0.28]} scale={[1 + resolve * 0.08, 1, 1]}>
-      <RoundedBox args={[2.52, 1.26, 0.026]} radius={0.052}>
+    <group position={[0.26, -0.02, -0.3]} scale={[1 + resolve * 0.12, 1 + resolve * 0.02, 1]}>
+      <RoundedBox args={[2.68, 1.34, 0.026]} radius={0.052}>
         <meshPhysicalMaterial
           clearcoat={0.18}
           clearcoatRoughness={0.78}
           color="#080d14"
           metalness={0.03}
-          opacity={resolve * 0.18}
+          opacity={resolve * 0.24}
           roughness={0.72}
           transparent
         />
       </RoundedBox>
-      <RoundedBox args={[1.7, 0.012, 0.01]} position={[0.1, 0.49, 0.03]} radius={0.005}>
-        <meshBasicMaterial color="#efe7d8" opacity={resolve * 0.13} transparent />
+      <RoundedBox args={[1.86, 0.012, 0.01]} position={[0.08, 0.52, 0.03]} radius={0.005}>
+        <meshBasicMaterial color="#efe7d8" opacity={resolve * 0.18} transparent />
       </RoundedBox>
-      <RoundedBox args={[0.68, 0.012, 0.01]} position={[-0.54, -0.49, 0.03]} radius={0.005}>
-        <meshBasicMaterial color="#cfd8e6" opacity={resolve * 0.13} transparent />
+      <RoundedBox args={[0.78, 0.012, 0.01]} position={[-0.58, -0.52, 0.03]} radius={0.005}>
+        <meshBasicMaterial color="#cfd8e6" opacity={resolve * 0.16} transparent />
       </RoundedBox>
     </group>
   );
 }
 
 function SceneGuides({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const approach = smoothstep(progress, 0.06, 0.32);
-  const resolve = smoothstep(progress, 0.72, 0.9);
+  const approach = smoothstep(progress, 0.03, 0.24);
+  const resolve = smoothstep(progress, 0.64, 0.84);
 
   return (
     <group position={[resolve * 0.18, -1.46, -0.62]}>
@@ -416,8 +420,8 @@ function StorySystem({
   compact = false,
   progress,
 }: Pick<Lab05SceneProps, "compact" | "progress">) {
-  const resolve = smoothstep(progress, 0.78, 0.94);
-  const split = smoothstep(progress, 0.38, 0.62);
+  const resolve = smoothstep(progress, 0.64, 0.84);
+  const split = smoothstep(progress, 0.28, 0.5);
 
   return (
     <group
@@ -425,13 +429,13 @@ function StorySystem({
         compact
           ? [0, -0.72, 0]
           : [
-              MathUtils.lerp(0.22, 0.38, resolve),
+              MathUtils.lerp(0.22, 0.46, resolve),
               MathUtils.lerp(0, -0.04, split),
               0,
             ]
       }
-      rotation={compact ? [-0.04, -0.1, 0] : [-0.045, MathUtils.lerp(-0.14, 0.09, progress), 0.006]}
-      scale={compact ? 0.82 : MathUtils.lerp(1, 0.92, resolve)}
+      rotation={compact ? [-0.04, -0.1, 0] : [-0.045, MathUtils.lerp(-0.16, 0.08, progress), 0.006]}
+      scale={compact ? 0.82 : MathUtils.lerp(1.04, 1.01, resolve)}
     >
       <SignatureMark progress={progress} />
       <ResolutionPlate progress={progress} />
@@ -451,9 +455,9 @@ export function Lab05Scene({
 }: Lab05SceneProps) {
   const camera = compact ? compactCamera : desktopCamera;
   const sceneProgress = reducedMotion
-    ? 0.68
+    ? 0.74
     : compact
-      ? Math.min(progress * 0.9, 0.88)
+      ? Math.min(progress * 0.92, 0.88)
       : progress;
 
   return (
@@ -472,13 +476,13 @@ export function Lab05Scene({
       <color attach="background" args={["#050609"]} />
       <fog attach="fog" args={["#050609", 7.2, 17]} />
 
-      <ambientLight intensity={0.2} />
-      <hemisphereLight color="#f5ecdf" groundColor="#070b10" intensity={0.22} />
+      <ambientLight intensity={0.22} />
+      <hemisphereLight color="#f5ecdf" groundColor="#070b10" intensity={0.24} />
       <directionalLight color="#f2eadf" position={[2.8, 4.2, 5.6]} intensity={1.02} />
       <spotLight
         angle={0.28}
         color="#fff1dd"
-        intensity={2.4}
+        intensity={2.55}
         penumbra={0.84}
         position={[1.5, 3.6, 5.9]}
       />

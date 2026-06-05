@@ -62,28 +62,28 @@ function StoryCopy({
   const isCta = activeStep.id === "cta";
 
   return (
-    <article className="self-start pt-14 md:self-center md:pt-0">
+    <article className="self-start pt-12 md:self-center md:pt-0">
       <p className="text-[0.7rem] uppercase tracking-normal text-muted">
-        C4 signature scroll story
+        C4 capability demo
       </p>
-      <h1 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.02] sm:text-5xl md:text-6xl">
+      <h1 className="mt-5 max-w-2xl text-4xl font-semibold leading-[0.99] sm:text-5xl md:text-6xl">
         {activeStep.title}
       </h1>
       <p
-        className="mt-6 max-w-xl text-base leading-7 text-muted transition duration-700 md:text-lg md:leading-8"
+        className="mt-5 max-w-xl text-base leading-7 text-muted transition duration-700 md:text-lg md:leading-8"
         style={{
           opacity: Math.max(0.52, introReveal),
           transform: `translateY(${(1 - introReveal) * 8}px)`,
         }}
       >
         {activeStepIndex === 0
-          ? "We design, build, and automate the digital layer behind better client experiences."
+          ? "A static business website becomes a connected growth system for strategy, design, development, automation, and improvement."
           : activeStep.body}
       </p>
 
       <div
         aria-hidden={!isCta}
-        className="mt-7 max-w-md border-l border-white/18 bg-[#050609]/76 py-4 pl-4 pr-4 backdrop-blur-sm transition duration-700"
+        className="mt-7 max-w-lg border-l border-[#efe7d8]/40 bg-[#050609]/82 py-4 pl-4 pr-4 backdrop-blur-sm transition duration-700"
         style={{
           opacity: ctaReveal,
           transform: `translateY(${(1 - ctaReveal) * 12}px)`,
@@ -91,11 +91,11 @@ function StoryCopy({
         }}
       >
         <p className="text-[0.7rem] uppercase tracking-normal text-muted">
-          Capability demo
+          Final frame
         </p>
-        <p className="mt-2 text-sm leading-6 text-[#f4f1e8]">
-          C4 turns the website into the operating layer for offers, launches,
-          follow-up, measurement, and growth.
+        <p className="mt-2 text-base leading-7 text-[#f4f1e8]">
+          One connected web system for the offer, the experience, the build,
+          the automation, and the growth loop.
         </p>
       </div>
     </article>
@@ -103,8 +103,16 @@ function StoryCopy({
 }
 
 function StoryRail({ activeStepIndex }: { activeStepIndex: number }) {
+  const isFinal = lab05StorySteps[activeStepIndex]?.id === "cta";
+
   return (
-    <div className="hidden gap-3 lg:grid">
+    <div
+      className="hidden gap-3 transition duration-700 lg:grid"
+      style={{
+        opacity: isFinal ? 0.32 : 1,
+        transform: `translateX(${isFinal ? 16 : 0}px)`,
+      }}
+    >
       {lab05StorySteps.map((step, index) => {
         const isActive = index === activeStepIndex;
 
@@ -121,7 +129,7 @@ function StoryRail({ activeStepIndex }: { activeStepIndex: number }) {
               opacity: isActive ? 1 : 0.46,
             }}
           >
-            <p className="text-[0.7rem] uppercase tracking-normal text-muted">
+            <p className="font-mono text-[0.68rem] uppercase tracking-normal text-muted">
               {Math.round(step.progress * 100)
                 .toString()
                 .padStart(2, "0")}
@@ -134,7 +142,7 @@ function StoryRail({ activeStepIndex }: { activeStepIndex: number }) {
               className="overflow-hidden text-sm leading-6 text-muted transition duration-500"
               style={{
                 marginTop: isActive ? 8 : 0,
-                maxHeight: isActive ? 72 : 0,
+                maxHeight: isActive ? 88 : 0,
                 opacity: isActive ? 1 : 0,
               }}
             >
@@ -180,16 +188,16 @@ function ProcessCardsSection() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="text-[0.7rem] uppercase tracking-normal text-muted">
-              Story handoff
+              System handoff
             </p>
             <h2 className="mt-5 max-w-2xl text-3xl font-semibold leading-[1.04] sm:text-4xl md:text-6xl">
               Build the next version of your business online.
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-muted md:text-lg md:leading-8">
-            The final frame resolves into the practical C4 service system:
-            clarify the offer, shape the experience, build the product-grade
-            website, automate the follow-up, and keep improving what works.
+            The story resolves into the practical C4 service system: clarify
+            the offer, shape the experience, build the product-grade website,
+            automate the follow-up, and keep improving what works.
           </p>
         </div>
 
@@ -222,7 +230,7 @@ function ReducedMotionLab05({ compact = false }: { compact?: boolean }) {
         <Header />
 
         <div className="absolute inset-0 opacity-[0.82]">
-          <Lab05Scene compact={compact} progress={0.68} reducedMotion />
+          <Lab05Scene compact={compact} progress={0.74} reducedMotion />
         </div>
 
         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-3.5rem)] max-w-7xl items-end gap-10 pb-10 pt-24 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
@@ -267,8 +275,8 @@ export function Lab05C4Story() {
   const isCompact = useCompactViewport();
   const activeStepIndex = getActiveStepIndex(progress);
   const activeStep = lab05StorySteps[activeStepIndex];
-  const introReveal = smoothstep(progress, 0.04, 0.18);
-  const ctaReveal = smoothstep(progress, 0.72, 0.9);
+  const introReveal = smoothstep(progress, 0.02, 0.12);
+  const ctaReveal = smoothstep(progress, 0.64, 0.84);
   const progressLabel = `${Math.round(progress * 100)
     .toString()
     .padStart(2, "0")}%`;
@@ -281,7 +289,7 @@ export function Lab05C4Story() {
     <main className="min-h-screen bg-[#050609] text-foreground">
       <section
         ref={sectionRef}
-        className="relative min-h-[600vh] overflow-clip bg-[#050609]"
+        className="relative min-h-[520vh] overflow-clip bg-[#050609]"
         aria-label="Lab 05 C4 Studios signature scroll story"
       >
         <div className="sticky top-0 h-screen overflow-hidden">
@@ -297,7 +305,7 @@ export function Lab05C4Story() {
           <div className="pointer-events-none relative z-20 mx-auto grid h-full max-w-7xl grid-rows-[auto_1fr_auto] px-6 py-7 md:px-10">
             <Header />
 
-            <div className="grid min-h-0 items-center gap-8 py-10 lg:grid-cols-[430px_1fr_360px]">
+            <div className="grid min-h-0 items-center gap-8 py-9 lg:grid-cols-[450px_1fr_360px]">
               <StoryCopy
                 activeStepIndex={activeStepIndex}
                 ctaReveal={ctaReveal}
@@ -313,7 +321,11 @@ export function Lab05C4Story() {
               <div className="max-w-5xl">
                 <div className="mb-4 flex items-center justify-between gap-4 text-xs uppercase text-muted md:justify-start md:gap-8">
                   <span>C4 Studios</span>
-                  <span>{activeStep.label}</span>
+                  <span>
+                    {activeStep.id === "cta"
+                      ? "Growth system"
+                      : activeStep.label}
+                  </span>
                   <span>{progressLabel}</span>
                 </div>
                 <div className="h-px overflow-hidden bg-white/10">
