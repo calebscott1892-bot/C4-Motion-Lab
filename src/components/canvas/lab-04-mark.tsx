@@ -76,7 +76,7 @@ function CMark() {
   return (
     <group>
       <mesh rotation={[0, 0, Math.PI * 0.19]}>
-        <torusGeometry args={[0.56, 0.062, 34, 144, Math.PI * 1.52]} />
+        <torusGeometry args={[0.56, 0.062, 24, 96, Math.PI * 1.52]} />
         <meshPhysicalMaterial
           clearcoat={0.42}
           clearcoatRoughness={0.5}
@@ -88,12 +88,12 @@ function CMark() {
       </mesh>
 
       <mesh position={[-0.025, -0.01, -0.072]} rotation={[0, 0, Math.PI * 0.19]}>
-        <torusGeometry args={[0.56, 0.064, 28, 112, Math.PI * 1.52]} />
+        <torusGeometry args={[0.56, 0.064, 20, 80, Math.PI * 1.52]} />
         <meshBasicMaterial color="#34404c" transparent opacity={0.24} />
       </mesh>
 
       <mesh position={[0.45, 0.33, 0.028]}>
-        <sphereGeometry args={[0.063, 24, 24]} />
+        <sphereGeometry args={[0.063, 18, 18]} />
         <meshPhysicalMaterial
           clearcoat={0.36}
           clearcoatRoughness={0.42}
@@ -104,7 +104,7 @@ function CMark() {
       </mesh>
 
       <mesh position={[0.34, -0.43, 0.024]}>
-        <sphereGeometry args={[0.059, 24, 24]} />
+        <sphereGeometry args={[0.059, 18, 18]} />
         <meshPhysicalMaterial
           clearcoat={0.34}
           clearcoatRoughness={0.48}
@@ -140,11 +140,11 @@ function Stroke({
   return (
     <RoundedBox
       args={args}
-      bevelSegments={8}
+      bevelSegments={6}
       position={position}
       radius={Math.min(args[0], args[1]) * 0.22}
       rotation={rotation}
-      smoothness={8}
+      smoothness={6}
     >
       <meshPhysicalMaterial
         clearcoat={0.36}
@@ -172,11 +172,11 @@ function ShadowStroke({
   return (
     <RoundedBox
       args={args}
-      bevelSegments={6}
+      bevelSegments={4}
       position={position}
       radius={Math.min(args[0], args[1]) * 0.18}
       rotation={rotation}
-      smoothness={6}
+      smoothness={4}
     >
       <meshBasicMaterial color="#26313c" transparent opacity={0.34} />
     </RoundedBox>
@@ -220,7 +220,7 @@ function FourMark() {
 function BackPlate() {
   return (
     <group>
-      <RoundedBox args={[2.18, 1.34, 0.052]} bevelSegments={6} radius={0.045} smoothness={8}>
+      <RoundedBox args={[2.18, 1.34, 0.052]} bevelSegments={4} radius={0.045} smoothness={6}>
         <meshPhysicalMaterial
           clearcoat={0.28}
           clearcoatRoughness={0.72}

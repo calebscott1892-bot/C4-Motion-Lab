@@ -3,6 +3,10 @@
 import { Canvas } from "@react-three/fiber";
 import { ACESFilmicToneMapping, SRGBColorSpace } from "three";
 import { Lab04Mark } from "@/components/canvas/lab-04-mark";
+import {
+  canvasDprSettings,
+  canvasGlSettings,
+} from "@/lib/three/canvas-settings";
 
 type Lab04SceneProps = {
   compact?: boolean;
@@ -18,14 +22,6 @@ const desktopCamera = {
 const compactCamera = {
   position: [0, 0.05, 8.65] as [number, number, number],
   fov: 41,
-};
-
-const dprSettings = [1, 1.5] as [number, number];
-
-const glSettings = {
-  alpha: true,
-  antialias: true,
-  powerPreference: "high-performance" as const,
 };
 
 function clamp(value: number) {
@@ -46,7 +42,7 @@ function SceneDepth({ compact = false, progress }: Pick<Lab04SceneProps, "compac
   return (
     <group position={compact ? [0, -1.56, -0.62] : [0.18 + settle * 0.1, -1.56, -0.82]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} scale={compact ? [0.66, 0.28, 1] : [0.94, 0.34, 1]}>
-        <circleGeometry args={[3.15, 96]} />
+        <circleGeometry args={[3.15, 72]} />
         <meshBasicMaterial color="#ebe6dc" transparent opacity={opacity} />
       </mesh>
 
@@ -102,9 +98,9 @@ export function Lab04Scene({
     <Canvas
       aria-hidden
       camera={camera}
-      dpr={dprSettings}
+      dpr={canvasDprSettings}
       frameloop={reducedMotion ? "demand" : "always"}
-      gl={glSettings}
+      gl={canvasGlSettings}
       onCreated={({ gl }) => {
         gl.outputColorSpace = SRGBColorSpace;
         gl.toneMapping = ACESFilmicToneMapping;

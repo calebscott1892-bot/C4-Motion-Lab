@@ -17,14 +17,15 @@ export function useScrollProgress(targetRef: RefObject<HTMLElement | null>) {
     }
 
     let frame = 0;
+    const metrics = {
+      scrollableDistance: 1,
+      startY: 0,
+    };
 
-    const measure = () => {
-      const rect = target.getBoundingClientRect();
-      const scrollableDistance = Math.max(
-        1,
-        target.offsetHeight - window.innerHeight,
+    const updateProgress = () => {
+      const nextProgress = clamp(
+        (window.scrollY - metrics.startY) / metrics.scrollableDistance,
       );
-      const nextProgress = clamp(-rect.top / scrollableDistance);
 
       setProgress((currentProgress) => {
         if (Math.abs(currentProgress - nextProgress) < 0.001) {
@@ -35,6 +36,22 @@ export function useScrollProgress(targetRef: RefObject<HTMLElement | null>) {
       });
     };
 
+    const measure = () => {
+      const rect = target.getBoundingClientRect();
+      metrics.startY = window.scrollY + rect.top;
+      metrics.scrollableDistance = Math.max(
+        1,
+        target.offsetHeight - window.innerHeight,
+      );
+
+      updateProgress();
+    };
+
+    const requestProgress = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateProgress);
+    };
+
     const requestMeasure = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(measure);
@@ -42,12 +59,12 @@ export function useScrollProgress(targetRef: RefObject<HTMLElement | null>) {
 
     measure();
 
-    window.addEventListener("scroll", requestMeasure, { passive: true });
+    window.addEventListener("scroll", requestProgress, { passive: true });
     window.addEventListener("resize", requestMeasure);
 
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", requestMeasure);
+      window.removeEventListener("scroll", requestProgress);
       window.removeEventListener("resize", requestMeasure);
     };
   }, [targetRef]);

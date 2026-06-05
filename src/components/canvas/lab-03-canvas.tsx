@@ -3,6 +3,10 @@
 import { Canvas } from "@react-three/fiber";
 import { Lab03Layer } from "@/components/canvas/lab-03-layer";
 import { lab03Layers } from "@/lib/animation/lab-03-layers";
+import {
+  canvasDprSettings,
+  canvasGlSettings,
+} from "@/lib/three/canvas-settings";
 
 type Lab03CanvasProps = {
   compact?: boolean;
@@ -18,14 +22,6 @@ const desktopCamera = {
 const compactCamera = {
   position: [0.05, 0.08, 8.6] as [number, number, number],
   fov: 44,
-};
-
-const dprSettings = [1, 1.5] as [number, number];
-
-const glSettings = {
-  alpha: true,
-  antialias: true,
-  powerPreference: "high-performance" as const,
 };
 
 function clamp(value: number) {
@@ -121,7 +117,7 @@ function SceneGuide({ compact = false }: Pick<Lab03CanvasProps, "compact">) {
         rotation={[-Math.PI / 2, 0, 0]}
         scale={compact ? [0.76, 0.42, 1] : [1, 0.5, 1]}
       >
-        <circleGeometry args={[2.95, 96]} />
+        <circleGeometry args={[2.95, 72]} />
         <meshBasicMaterial color="#d8dee9" transparent opacity={0.026} />
       </mesh>
       <mesh position={[0, 0.02, 0]}>
@@ -156,9 +152,9 @@ export function Lab03Canvas({
     <Canvas
       aria-hidden
       camera={camera}
-      dpr={dprSettings}
+      dpr={canvasDprSettings}
       frameloop={reducedMotion ? "demand" : "always"}
-      gl={glSettings}
+      gl={canvasGlSettings}
     >
       <color attach="background" args={["#050609"]} />
       <fog attach="fog" args={["#050609", 7.8, 17]} />

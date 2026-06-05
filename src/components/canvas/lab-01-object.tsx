@@ -173,7 +173,7 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
       </mesh>
 
       <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.78, 0.011, 16, 112]} />
+        <torusGeometry args={[1.78, 0.011, 12, 80]} />
         <meshStandardMaterial
           color="#c6ceda"
           emissive="#9eb3d6"
@@ -186,7 +186,7 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
       </mesh>
 
       <mesh rotation={[0.2, Math.PI / 2, 0]}>
-        <torusGeometry args={[1.35, 0.008, 16, 96]} />
+        <torusGeometry args={[1.35, 0.008, 12, 72]} />
         <meshStandardMaterial
           color="#eef1f5"
           metalness={0.22}
@@ -197,7 +197,7 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
       </mesh>
 
       <mesh position={[1.76, -0.04, 0.38]}>
-        <sphereGeometry args={[0.075, 24, 24]} />
+        <sphereGeometry args={[0.075, 18, 18]} />
         <meshStandardMaterial
           ref={nodeMaterialRef}
           color="#f4f1e8"
@@ -208,12 +208,12 @@ export function Lab01Object({ progress, reducedMotion }: Lab01ObjectProps) {
       </mesh>
 
       <mesh position={[-1.08, 1.08, 0.12]}>
-        <sphereGeometry args={[0.045, 20, 20]} />
+        <sphereGeometry args={[0.045, 16, 16]} />
         <meshStandardMaterial color="#8f9caf" roughness={0.34} />
       </mesh>
 
       <mesh position={[0.84, -1.03, 0.2]}>
-        <sphereGeometry args={[0.035, 20, 20]} />
+        <sphereGeometry args={[0.035, 16, 16]} />
         <meshStandardMaterial color="#cfd7e3" roughness={0.34} />
       </mesh>
     </group>

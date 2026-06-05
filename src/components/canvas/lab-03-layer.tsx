@@ -74,7 +74,7 @@ function LayerIcon({ layer }: { layer: Lab03Layer }) {
     return (
       <group position={[0, 0.02, 0.095]}>
         <mesh>
-          <sphereGeometry args={[0.18, 32, 32]} />
+          <sphereGeometry args={[0.18, 24, 24]} />
           <meshStandardMaterial color={layer.accent} metalness={0.18} roughness={0.3} />
         </mesh>
         <mesh position={[0.34, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
@@ -116,7 +116,7 @@ function LayerIcon({ layer }: { layer: Lab03Layer }) {
     return (
       <group position={[0, 0.02, 0.095]} rotation={[0, 0, -0.18]}>
         <mesh>
-          <torusGeometry args={[0.25, 0.018, 16, 72]} />
+          <torusGeometry args={[0.25, 0.018, 12, 56]} />
           <meshStandardMaterial color={layer.accent} metalness={0.18} roughness={0.34} />
         </mesh>
         <mesh position={[0.29, -0.29, 0]} rotation={[0, 0, Math.PI / 4]}>
@@ -140,7 +140,7 @@ function LayerIcon({ layer }: { layer: Lab03Layer }) {
           [0.46, -0.18, 0],
         ].map((position, index) => (
           <mesh key={index} position={position as [number, number, number]}>
-            <sphereGeometry args={[0.08, 24, 24]} />
+            <sphereGeometry args={[0.08, 16, 16]} />
             <meshStandardMaterial color={index === 1 ? layer.accent : layer.secondary} />
           </mesh>
         ))}
@@ -193,11 +193,11 @@ function LayerIcon({ layer }: { layer: Lab03Layer }) {
         <meshStandardMaterial color={layer.accent} metalness={0.14} roughness={0.36} />
       </mesh>
       <mesh position={[-0.45, 0.16, 0.032]}>
-        <sphereGeometry args={[0.045, 18, 18]} />
+        <sphereGeometry args={[0.045, 14, 14]} />
         <meshStandardMaterial color={layer.accent} roughness={0.34} />
       </mesh>
       <mesh position={[0.08, -0.1, 0.05]}>
-        <sphereGeometry args={[0.045, 18, 18]} />
+        <sphereGeometry args={[0.045, 14, 14]} />
         <meshStandardMaterial color="#050609" roughness={0.34} />
       </mesh>
     </group>
@@ -279,12 +279,12 @@ function LayerSurface({ layer }: { layer: Lab03Layer }) {
       </mesh>
 
       <mesh position={[-1.12, 0.54, 0.092]}>
-        <sphereGeometry args={[0.032, 18, 18]} />
+        <sphereGeometry args={[0.032, 14, 14]} />
         <meshStandardMaterial color={layer.accent} metalness={0.18} roughness={0.28} />
       </mesh>
 
       <mesh position={[1.12, -0.52, 0.092]}>
-        <sphereGeometry args={[0.027, 18, 18]} />
+        <sphereGeometry args={[0.027, 14, 14]} />
         <meshStandardMaterial color={layer.secondary} metalness={0.14} roughness={0.34} />
       </mesh>
 

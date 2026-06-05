@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Lab05Scene } from "@/components/canvas/lab-05-scene";
+import { useCompactViewport } from "@/components/motion/use-compact-viewport";
 import { useReducedMotion } from "@/components/motion/use-reduced-motion";
 import { useScrollProgress } from "@/components/motion/use-scroll-progress";
 import {
@@ -18,24 +19,6 @@ function smoothstep(value: number, min: number, max: number) {
   const normalized = clamp((value - min) / Math.max(0.001, max - min));
 
   return normalized * normalized * (3 - 2 * normalized);
-}
-
-function useCompactViewport() {
-  const [isCompact, setIsCompact] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 767px)");
-    const update = () => setIsCompact(query.matches);
-
-    update();
-    query.addEventListener("change", update);
-
-    return () => {
-      query.removeEventListener("change", update);
-    };
-  }, []);
-
-  return isCompact;
 }
 
 function getActiveStepIndex(progress: number) {
@@ -167,6 +150,10 @@ function StoryRail({ activeStepIndex }: { activeStepIndex: number }) {
 function MobileStepCard({ activeStepIndex }: { activeStepIndex: number }) {
   const activeStep = lab05StorySteps[activeStepIndex];
 
+  if (activeStep.id === "cta") {
+    return null;
+  }
+
   return (
     <article
       className="border-l bg-[#050609]/86 py-3 pl-4 pr-3 backdrop-blur-md lg:hidden"
@@ -184,21 +171,25 @@ function MobileStepCard({ activeStepIndex }: { activeStepIndex: number }) {
 
 function ProcessCardsSection() {
   return (
-    <section className="border-t border-white/10 bg-[#050609] px-6 py-24 text-foreground md:px-10 md:py-32">
+    <section
+      className="relative border-t border-white/10 bg-[#050609] px-6 py-24 text-foreground md:px-10 md:py-32"
+      aria-label="C4 Studios service system"
+    >
+      <div className="pointer-events-none absolute inset-x-[8.333%] top-0 h-px bg-[#efe7d8]/28" />
       <div className="mx-auto grid max-w-7xl gap-14">
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="text-[0.7rem] uppercase tracking-normal text-muted">
-              Service system
+              Story handoff
             </p>
             <h2 className="mt-5 max-w-2xl text-3xl font-semibold leading-[1.04] sm:text-4xl md:text-6xl">
               Build the next version of your business online.
             </h2>
           </div>
           <p className="max-w-xl text-base leading-7 text-muted md:text-lg md:leading-8">
-            The final production page would turn this lab into a C4 Studios
-            service narrative: strategy up front, motion in the middle, and a
-            clear conversion path at the end.
+            The final frame resolves into the practical C4 service system:
+            clarify the offer, shape the experience, build the product-grade
+            website, automate the follow-up, and keep improving what works.
           </p>
         </div>
 
@@ -206,7 +197,7 @@ function ProcessCardsSection() {
           {lab05ProcessCards.map((card) => (
             <article
               key={card.id}
-              className="min-h-48 border-l border-t bg-white/[0.018] p-5 md:min-h-56"
+              className="min-h-48 border-l border-t bg-white/[0.018] p-5 transition duration-300 hover:bg-white/[0.026] md:min-h-56"
               style={{ borderColor: card.accent }}
             >
               <p className="text-[0.7rem] uppercase tracking-normal text-muted">
@@ -276,8 +267,8 @@ export function Lab05C4Story() {
   const isCompact = useCompactViewport();
   const activeStepIndex = getActiveStepIndex(progress);
   const activeStep = lab05StorySteps[activeStepIndex];
-  const introReveal = smoothstep(progress, 0.05, 0.22);
-  const ctaReveal = smoothstep(progress, 0.78, 0.94);
+  const introReveal = smoothstep(progress, 0.04, 0.18);
+  const ctaReveal = smoothstep(progress, 0.72, 0.9);
   const progressLabel = `${Math.round(progress * 100)
     .toString()
     .padStart(2, "0")}%`;
@@ -290,7 +281,7 @@ export function Lab05C4Story() {
     <main className="min-h-screen bg-[#050609] text-foreground">
       <section
         ref={sectionRef}
-        className="relative min-h-[650vh] overflow-clip bg-[#050609]"
+        className="relative min-h-[600vh] overflow-clip bg-[#050609]"
         aria-label="Lab 05 C4 Studios signature scroll story"
       >
         <div className="sticky top-0 h-screen overflow-hidden">

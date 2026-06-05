@@ -29,7 +29,7 @@ export const lab05StorySteps: Lab05StoryStep[] = [
     body: "The camera moves in, shifting the website from a flat destination into a working system.",
     id: "approach",
     label: "Approach",
-    progress: 0.15,
+    progress: 0.12,
     title: "The system comes into focus.",
   },
   {
@@ -37,7 +37,7 @@ export const lab05StorySteps: Lab05StoryStep[] = [
     body: "Panels assemble into a conversion-focused interface with clear hierarchy and structure.",
     id: "assemble",
     label: "Website",
-    progress: 0.3,
+    progress: 0.27,
     title: "The website starts behaving like a product.",
   },
   {
@@ -45,7 +45,7 @@ export const lab05StorySteps: Lab05StoryStep[] = [
     body: "Strategy, design, development, automation, and analytics separate into a readable growth stack.",
     id: "layers",
     label: "Layers",
-    progress: 0.45,
+    progress: 0.42,
     title: "The service layer opens up.",
   },
   {
@@ -53,7 +53,7 @@ export const lab05StorySteps: Lab05StoryStep[] = [
     body: "The layers connect into an ecosystem that can launch, follow up, measure, and improve.",
     id: "ecosystem",
     label: "Ecosystem",
-    progress: 0.65,
+    progress: 0.6,
     title: "The parts start working together.",
   },
   {
@@ -61,7 +61,7 @@ export const lab05StorySteps: Lab05StoryStep[] = [
     body: "The story resolves into a commercial promise: build the next version of the business online.",
     id: "cta",
     label: "Resolve",
-    progress: 0.85,
+    progress: 0.8,
     title: "Build the next version of your business online.",
   },
 ];

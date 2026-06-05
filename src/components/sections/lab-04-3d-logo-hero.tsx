@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Lab04Scene } from "@/components/canvas/lab-04-scene";
+import { useCompactViewport } from "@/components/motion/use-compact-viewport";
 import { useReducedMotion } from "@/components/motion/use-reduced-motion";
 import { useScrollProgress } from "@/components/motion/use-scroll-progress";
 
@@ -14,24 +15,6 @@ function smoothstep(value: number, min: number, max: number) {
   const normalized = clamp((value - min) / Math.max(0.001, max - min));
 
   return normalized * normalized * (3 - 2 * normalized);
-}
-
-function useCompactViewport() {
-  const [isCompact, setIsCompact] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 767px)");
-    const update = () => setIsCompact(query.matches);
-
-    update();
-    query.addEventListener("change", update);
-
-    return () => {
-      query.removeEventListener("change", update);
-    };
-  }, []);
-
-  return isCompact;
 }
 
 const motionNotes = [

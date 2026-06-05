@@ -2,6 +2,10 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Lab01Object } from "@/components/canvas/lab-01-object";
+import {
+  canvasDprSettings,
+  canvasGlSettings,
+} from "@/lib/three/canvas-settings";
 
 type Lab01CanvasProps = {
   progress: number;
@@ -13,22 +17,14 @@ const cameraSettings = {
   fov: 38,
 };
 
-const dprSettings = [1, 1.5] as [number, number];
-
-const glSettings = {
-  alpha: true,
-  antialias: true,
-  powerPreference: "high-performance" as const,
-};
-
 export function Lab01Canvas({ progress, reducedMotion }: Lab01CanvasProps) {
   return (
     <Canvas
       aria-hidden
       camera={cameraSettings}
-      dpr={dprSettings}
+      dpr={canvasDprSettings}
       frameloop={reducedMotion ? "demand" : "always"}
-      gl={glSettings}
+      gl={canvasGlSettings}
     >
       <ambientLight intensity={0.5} />
       <directionalLight position={[3.8, 4.2, 5]} intensity={2.05} />
@@ -42,7 +38,7 @@ export function Lab01Canvas({ progress, reducedMotion }: Lab01CanvasProps) {
         rotation={[-Math.PI / 2, 0, 0]}
         scale={[1.9, 0.32, 1]}
       >
-        <circleGeometry args={[2.25, 64]} />
+        <circleGeometry args={[2.25, 48]} />
         <meshBasicMaterial color="#d7dde8" transparent opacity={0.045} />
       </mesh>
     </Canvas>

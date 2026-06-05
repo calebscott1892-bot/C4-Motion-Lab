@@ -8,6 +8,10 @@ import { MathUtils } from "three";
 import { Lab02CameraJourney } from "@/components/canvas/lab-02-camera-journey";
 import { Lab02StageObject } from "@/components/canvas/lab-02-stage-object";
 import { lab02Stages } from "@/lib/animation/lab-02-stages";
+import {
+  canvasDprSettings,
+  canvasGlSettings,
+} from "@/lib/three/canvas-settings";
 
 type Lab02SceneProps = {
   onStageChange?: (stageIndex: number) => void;
@@ -19,14 +23,7 @@ const cameraSettings = {
   fov: 42,
 };
 
-const dprSettings = [1, 1.5] as [number, number];
 const lastStageIndex = lab02Stages.length - 1;
-
-const glSettings = {
-  alpha: true,
-  antialias: true,
-  powerPreference: "high-performance" as const,
-};
 
 function SpatialGuide() {
   return (
@@ -37,7 +34,7 @@ function SpatialGuide() {
       </mesh>
 
       <mesh position={[0, -1.38, -15.1]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[6.2, 96]} />
+        <circleGeometry args={[6.2, 72]} />
         <meshBasicMaterial color="#d8dee9" transparent opacity={0.014} />
       </mesh>
 
@@ -107,10 +104,11 @@ export function Lab02Scene({
 }: Lab02SceneProps) {
   return (
     <Canvas
+      aria-hidden
       camera={cameraSettings}
-      dpr={dprSettings}
+      dpr={canvasDprSettings}
       frameloop={reducedMotion ? "demand" : "always"}
-      gl={glSettings}
+      gl={canvasGlSettings}
     >
       <ScrollControls damping={0.22} distance={0.9} pages={lab02Stages.length}>
         <Lab02World reducedMotion={reducedMotion} />
@@ -126,10 +124,11 @@ export function Lab02Scene({
 export function Lab02StaticScene() {
   return (
     <Canvas
+      aria-hidden
       camera={{ position: [0, 0.35, 9], fov: 38 }}
-      dpr={dprSettings}
+      dpr={canvasDprSettings}
       frameloop="demand"
-      gl={glSettings}
+      gl={canvasGlSettings}
     >
       <color attach="background" args={["#050609"]} />
       <fog attach="fog" args={["#050609", 9, 24]} />

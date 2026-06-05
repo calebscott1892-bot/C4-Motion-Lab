@@ -10,6 +10,10 @@ import {
   Vector3,
 } from "three";
 import { lab05ProcessCards } from "@/lib/animation/lab-05-story";
+import {
+  canvasDprSettings,
+  canvasGlSettings,
+} from "@/lib/three/canvas-settings";
 
 type Lab05SceneProps = {
   compact?: boolean;
@@ -27,14 +31,6 @@ const desktopCamera = {
 const compactCamera = {
   fov: 43,
   position: [0, 0.1, 9.35] as VectorTuple,
-};
-
-const dprSettings = [1, 1.5] as [number, number];
-
-const glSettings = {
-  alpha: true,
-  antialias: true,
-  powerPreference: "high-performance" as const,
 };
 
 function clamp(value: number) {
@@ -56,10 +52,10 @@ function lerpTuple(from: VectorTuple, to: VectorTuple, amount: number): VectorTu
 }
 
 function getLayerPosition(index: number, progress: number): VectorTuple {
-  const assemble = smoothstep(progress, 0.18, 0.34);
-  const split = smoothstep(progress, 0.38, 0.56);
-  const connect = smoothstep(progress, 0.58, 0.72);
-  const resolve = smoothstep(progress, 0.78, 0.94);
+  const assemble = smoothstep(progress, 0.16, 0.3);
+  const split = smoothstep(progress, 0.34, 0.52);
+  const connect = smoothstep(progress, 0.52, 0.68);
+  const resolve = smoothstep(progress, 0.72, 0.9);
   const centeredIndex = index - 2;
   const angle = -Math.PI * 0.82 + index * (Math.PI * 0.41);
 
@@ -70,23 +66,27 @@ function getLayerPosition(index: number, progress: number): VectorTuple {
     centeredIndex * 0.045,
   ];
   const splitPosition: VectorTuple = [
-    centeredIndex * 0.09,
-    centeredIndex * -0.34,
-    centeredIndex * 0.16,
+    centeredIndex * 0.12,
+    centeredIndex * -0.32,
+    centeredIndex * 0.14,
   ];
   const ecosystem: VectorTuple = [
-    Math.cos(angle) * 1.08,
-    Math.sin(angle) * 0.62,
-    -0.04 + Math.sin(angle) * 0.18,
+    Math.cos(angle) * 1.12,
+    Math.sin(angle) * 0.58,
+    -0.06 + Math.sin(angle) * 0.15,
   ];
   const resolved: VectorTuple = [
-    ecosystem[0] * 0.76 + 0.22,
-    ecosystem[1] * 0.58,
-    ecosystem[2] - 0.02,
+    ecosystem[0] * 0.66 + 0.26,
+    ecosystem[1] * 0.48,
+    ecosystem[2] - 0.04,
   ];
 
   return lerpTuple(
-    lerpTuple(lerpTuple(lerpTuple(start, assembled, assemble), splitPosition, split), ecosystem, connect),
+    lerpTuple(
+      lerpTuple(lerpTuple(start, assembled, assemble), splitPosition, split),
+      ecosystem,
+      connect,
+    ),
     resolved,
     resolve,
   );
@@ -100,14 +100,14 @@ function StoryCameraRig({
   const lookTarget = useMemo(() => new Vector3(), []);
 
   useFrame(({ camera }, delta) => {
-    const approach = smoothstep(progress, 0.08, 0.28);
-    const split = smoothstep(progress, 0.38, 0.62);
-    const resolve = smoothstep(progress, 0.76, 0.94);
+    const approach = smoothstep(progress, 0.06, 0.24);
+    const split = smoothstep(progress, 0.34, 0.58);
+    const resolve = smoothstep(progress, 0.72, 0.9);
 
     targetPosition.set(
       compact ? 0 : MathUtils.lerp(0, 0.34, resolve),
       MathUtils.lerp(compact ? 0.1 : 0.04, compact ? -0.05 : 0.12, split),
-      MathUtils.lerp(compact ? 9.35 : 8.15, compact ? 7.7 : 5.75, approach) +
+      MathUtils.lerp(compact ? 9.35 : 8.15, compact ? 7.65 : 5.82, approach) +
         resolve * 0.62,
     );
 
@@ -125,10 +125,10 @@ function StoryCameraRig({
 }
 
 function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const assemble = smoothstep(progress, 0.18, 0.38);
-  const resolve = smoothstep(progress, 0.78, 0.94);
-  const opacity = Math.max(0.18, 1 - assemble * 0.68 - resolve * 0.12);
-  const scale = MathUtils.lerp(1, 0.72, assemble) * MathUtils.lerp(1, 0.86, resolve);
+  const assemble = smoothstep(progress, 0.16, 0.34);
+  const resolve = smoothstep(progress, 0.72, 0.9);
+  const opacity = Math.max(0.14, 1 - assemble * 0.72 - resolve * 0.18);
+  const scale = MathUtils.lerp(1, 0.7, assemble) * MathUtils.lerp(1, 0.82, resolve);
 
   return (
     <group
@@ -137,7 +137,7 @@ function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
       scale={scale}
     >
       <mesh rotation={[0, 0, Math.PI * 0.18]}>
-        <torusGeometry args={[0.52, 0.055, 30, 128, Math.PI * 1.52]} />
+        <torusGeometry args={[0.52, 0.055, 24, 96, Math.PI * 1.52]} />
         <meshPhysicalMaterial
           clearcoat={0.34}
           clearcoatRoughness={0.52}
@@ -193,7 +193,7 @@ function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
       </RoundedBox>
 
       <mesh position={[0.25, -0.42, 0.07]}>
-        <sphereGeometry args={[0.055, 22, 22]} />
+        <sphereGeometry args={[0.055, 18, 18]} />
         <meshPhysicalMaterial color="#d2d7df" opacity={opacity} roughness={0.34} transparent />
       </mesh>
     </group>
@@ -201,14 +201,14 @@ function SignatureMark({ progress }: Pick<Lab05SceneProps, "progress">) {
 }
 
 function InterfaceShell({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const assemble = smoothstep(progress, 0.2, 0.36);
-  const split = smoothstep(progress, 0.4, 0.6);
-  const resolve = smoothstep(progress, 0.78, 0.94);
+  const assemble = smoothstep(progress, 0.18, 0.32);
+  const split = smoothstep(progress, 0.36, 0.56);
+  const resolve = smoothstep(progress, 0.72, 0.9);
   const opacity = assemble * (1 - split * 0.72) * (1 - resolve * 0.34);
 
   return (
     <group position={[0, -0.02, -0.2]} scale={[1, 1, 1]}>
-      <RoundedBox args={[2.1, 1.24, 0.048]} radius={0.04}>
+      <RoundedBox args={[2.16, 1.28, 0.052]} radius={0.04}>
         <meshPhysicalMaterial
           clearcoat={0.24}
           clearcoatRoughness={0.74}
@@ -222,11 +222,17 @@ function InterfaceShell({ progress }: Pick<Lab05SceneProps, "progress">) {
       <RoundedBox args={[1.86, 0.018, 0.012]} position={[0, 0.51, 0.04]} radius={0.006}>
         <meshBasicMaterial color="#efe7d8" opacity={opacity * 0.2} transparent />
       </RoundedBox>
+      <RoundedBox args={[1.24, 0.012, 0.012]} position={[0.24, 0.33, 0.048]} radius={0.005}>
+        <meshBasicMaterial color="#718092" opacity={opacity * 0.16} transparent />
+      </RoundedBox>
       <RoundedBox args={[0.018, 0.92, 0.012]} position={[-0.9, -0.02, 0.04]} radius={0.006}>
         <meshBasicMaterial color="#7f8a99" opacity={opacity * 0.18} transparent />
       </RoundedBox>
-      <RoundedBox args={[0.54, 0.03, 0.014]} position={[-0.52, -0.46, 0.05]} radius={0.006}>
+      <RoundedBox args={[0.62, 0.032, 0.014]} position={[-0.5, -0.46, 0.05]} radius={0.006}>
         <meshBasicMaterial color="#cfd8e6" opacity={opacity * 0.2} transparent />
+      </RoundedBox>
+      <RoundedBox args={[0.28, 0.032, 0.014]} position={[0.56, -0.46, 0.05]} radius={0.006}>
+        <meshBasicMaterial color="#efe7d8" opacity={opacity * 0.14} transparent />
       </RoundedBox>
     </group>
   );
@@ -240,16 +246,19 @@ function GrowthLayer({
   progress: number;
 }) {
   const card = lab05ProcessCards[cardIndex];
-  const assemble = smoothstep(progress, 0.18, 0.34);
-  const split = smoothstep(progress, 0.38, 0.56);
-  const resolve = smoothstep(progress, 0.78, 0.94);
+  const assemble = smoothstep(progress, 0.16, 0.3);
+  const split = smoothstep(progress, 0.34, 0.52);
+  const resolve = smoothstep(progress, 0.72, 0.9);
   const position = getLayerPosition(cardIndex, progress);
-  const width = MathUtils.lerp(0.48, 1.32, assemble) * MathUtils.lerp(1, 0.56, resolve);
-  const height = MathUtils.lerp(0.08, 0.18, assemble) * MathUtils.lerp(1, 0.82, resolve);
+  const width = MathUtils.lerp(0.48, 1.36, assemble) * MathUtils.lerp(1, 0.58, resolve);
+  const height = MathUtils.lerp(0.08, 0.18, assemble) * MathUtils.lerp(1, 0.86, resolve);
   const opacity = Math.min(0.88, 0.08 + assemble * 0.68 + split * 0.12);
 
   return (
     <group position={position}>
+      <RoundedBox args={[width * 1.02, height * 1.08, 0.018]} position={[0.018, -0.018, -0.04]} radius={0.022}>
+        <meshBasicMaterial color="#040507" opacity={opacity * 0.46} transparent />
+      </RoundedBox>
       <RoundedBox args={[width, height, 0.052]} radius={0.022}>
         <meshPhysicalMaterial
           clearcoat={0.26}
@@ -260,6 +269,13 @@ function GrowthLayer({
           roughness={0.58}
           transparent
         />
+      </RoundedBox>
+      <RoundedBox
+        args={[0.012, height * 0.76, 0.014]}
+        position={[-width * 0.46, 0, 0.04]}
+        radius={0.005}
+      >
+        <meshBasicMaterial color={card.accent} opacity={opacity * 0.52} transparent />
       </RoundedBox>
       <RoundedBox
         args={[width * 0.22, height * 0.14, 0.012]}
@@ -308,15 +324,25 @@ function Connector({
 }
 
 function EcosystemConnectors({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const connect = smoothstep(progress, 0.58, 0.76);
-  const resolve = smoothstep(progress, 0.78, 0.94);
+  const connect = smoothstep(progress, 0.52, 0.7);
+  const resolve = smoothstep(progress, 0.72, 0.9);
   const hub: VectorTuple = [resolve * 0.18, 0, -0.05];
   const opacity = connect * MathUtils.lerp(0.18, 0.12, resolve);
 
   return (
     <group>
+      <group position={hub} scale={1 + resolve * 0.12}>
+        <mesh>
+          <torusGeometry args={[0.24 + connect * 0.12, 0.004, 8, 72]} />
+          <meshBasicMaterial color="#efe7d8" opacity={connect * 0.16} transparent />
+        </mesh>
+        <mesh rotation={[0.22, 0.14, 0.18]}>
+          <torusGeometry args={[0.43 + connect * 0.08, 0.003, 8, 72]} />
+          <meshBasicMaterial color="#7f8ea1" opacity={connect * 0.1} transparent />
+        </mesh>
+      </group>
       <mesh position={hub}>
-        <sphereGeometry args={[0.045 + connect * 0.035, 24, 24]} />
+        <sphereGeometry args={[0.045 + connect * 0.035, 20, 20]} />
         <meshPhysicalMaterial
           clearcoat={0.24}
           clearcoatRoughness={0.52}
@@ -327,20 +353,51 @@ function EcosystemConnectors({ progress }: Pick<Lab05SceneProps, "progress">) {
         />
       </mesh>
       {lab05ProcessCards.map((card, index) => (
-        <Connector key={card.id} from={hub} opacity={opacity} to={getLayerPosition(index, progress)} />
+        <Connector
+          key={card.id}
+          from={hub}
+          opacity={opacity}
+          to={getLayerPosition(index, progress)}
+        />
       ))}
     </group>
   );
 }
 
+function ResolutionPlate({ progress }: Pick<Lab05SceneProps, "progress">) {
+  const resolve = smoothstep(progress, 0.72, 0.92);
+
+  return (
+    <group position={[0.18, -0.02, -0.28]} scale={[1 + resolve * 0.08, 1, 1]}>
+      <RoundedBox args={[2.52, 1.26, 0.026]} radius={0.052}>
+        <meshPhysicalMaterial
+          clearcoat={0.18}
+          clearcoatRoughness={0.78}
+          color="#080d14"
+          metalness={0.03}
+          opacity={resolve * 0.18}
+          roughness={0.72}
+          transparent
+        />
+      </RoundedBox>
+      <RoundedBox args={[1.7, 0.012, 0.01]} position={[0.1, 0.49, 0.03]} radius={0.005}>
+        <meshBasicMaterial color="#efe7d8" opacity={resolve * 0.13} transparent />
+      </RoundedBox>
+      <RoundedBox args={[0.68, 0.012, 0.01]} position={[-0.54, -0.49, 0.03]} radius={0.005}>
+        <meshBasicMaterial color="#cfd8e6" opacity={resolve * 0.13} transparent />
+      </RoundedBox>
+    </group>
+  );
+}
+
 function SceneGuides({ progress }: Pick<Lab05SceneProps, "progress">) {
-  const approach = smoothstep(progress, 0.08, 0.34);
-  const resolve = smoothstep(progress, 0.78, 0.94);
+  const approach = smoothstep(progress, 0.06, 0.32);
+  const resolve = smoothstep(progress, 0.72, 0.9);
 
   return (
     <group position={[resolve * 0.18, -1.46, -0.62]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} scale={[0.94, 0.34, 1]}>
-        <circleGeometry args={[3.1, 96]} />
+        <circleGeometry args={[3.1, 72]} />
         <meshBasicMaterial color="#ebe6dc" opacity={0.014 + approach * 0.026} transparent />
       </mesh>
       <mesh position={[0, 0.02, 0]}>
@@ -377,6 +434,7 @@ function StorySystem({
       scale={compact ? 0.82 : MathUtils.lerp(1, 0.92, resolve)}
     >
       <SignatureMark progress={progress} />
+      <ResolutionPlate progress={progress} />
       <InterfaceShell progress={progress} />
       {lab05ProcessCards.map((card, index) => (
         <GrowthLayer key={card.id} cardIndex={index} progress={progress} />
@@ -402,9 +460,9 @@ export function Lab05Scene({
     <Canvas
       aria-hidden
       camera={camera}
-      dpr={dprSettings}
+      dpr={canvasDprSettings}
       frameloop={reducedMotion ? "demand" : "always"}
-      gl={glSettings}
+      gl={canvasGlSettings}
       onCreated={({ gl }) => {
         gl.outputColorSpace = SRGBColorSpace;
         gl.toneMapping = ACESFilmicToneMapping;
