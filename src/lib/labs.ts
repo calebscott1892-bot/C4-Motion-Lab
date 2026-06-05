@@ -45,8 +45,8 @@ export const labs: Lab[] = [
     href: "/labs/lab-05-c4-story",
     number: "Lab 05",
     title: "C4 Scroll Story",
-    description: "A route reserved for combining the lab patterns.",
-    status: "Setup placeholder",
+    description: "A signature scroll-story turning a website into a growth system.",
+    status: "Portfolio prototype",
   },
 ];
 

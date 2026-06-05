@@ -34,6 +34,24 @@ function useCompactViewport() {
   return isCompact;
 }
 
+const motionNotes = [
+  {
+    body: "Give the mark weight before the page begins to move.",
+    index: "01",
+    title: "Identity",
+  },
+  {
+    body: "Let the scroll feel guided, close, and intentional.",
+    index: "02",
+    title: "Interaction",
+  },
+  {
+    body: "Connect the intro to the conversion path behind it.",
+    index: "03",
+    title: "System",
+  },
+] as const;
+
 function Header() {
   return (
     <header className="pointer-events-auto relative z-20 flex items-center justify-between gap-6">
@@ -46,7 +64,7 @@ function Header() {
       <div className="flex items-center gap-3 text-xs uppercase text-muted">
         <span>Lab 04</span>
         <span className="h-px w-10 bg-white/18" />
-        <span>3D logo hero</span>
+        <span>Brand motion</span>
       </div>
     </header>
   );
@@ -62,37 +80,37 @@ function HeroCopy({
   const isFinal = finalReveal > 0.5;
 
   return (
-    <div className="self-start pt-16 md:self-center md:pt-0">
-      <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+    <div className="self-start pt-14 md:self-center md:pt-0">
+      <p className="text-[0.7rem] uppercase tracking-normal text-muted">
         C4 brand-motion prototype
       </p>
-      <h1 className="mt-5 max-w-xl text-5xl font-semibold leading-[0.98] md:text-6xl">
+      <h1 className="mt-5 max-w-xl text-4xl font-semibold leading-[1.02] sm:text-5xl md:text-6xl">
         {isFinal
           ? "A brand intro for the product era."
           : "Websites that move like products."}
       </h1>
       <p
-        className="mt-6 max-w-sm text-base leading-7 text-muted transition duration-700 md:text-lg md:leading-8"
+        className="mt-6 max-w-md text-base leading-7 text-muted transition duration-700 md:text-lg md:leading-8"
         style={{
-          opacity: Math.max(0.42, copyReveal),
-          transform: `translateY(${(1 - copyReveal) * 10}px)`,
+          opacity: Math.max(0.5, copyReveal),
+          transform: `translateY(${(1 - copyReveal) * 8}px)`,
         }}
       >
         Built with strategy, motion, and automation.
       </p>
       <div
         aria-hidden={finalReveal < 0.5}
-        className="mt-7 max-w-sm border-l border-white/18 bg-[#050609]/72 py-3 pl-4 pr-3 backdrop-blur-sm transition duration-700"
+        className="mt-7 hidden max-w-sm border-l border-white/18 bg-[#050609]/72 py-3 pl-4 pr-3 backdrop-blur-sm transition duration-700 md:block"
         style={{
           opacity: finalReveal,
           transform: `translateY(${(1 - finalReveal) * 12}px)`,
-          visibility: finalReveal > 0.02 ? "visible" : "hidden",
-        }}
-      >
-        <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+        visibility: finalReveal > 0.02 ? "visible" : "hidden",
+      }}
+    >
+        <p className="text-[0.7rem] uppercase tracking-normal text-muted">
           Studio promise
         </p>
-        <p className="mt-2 text-sm leading-6 text-foreground">
+        <p className="mt-2 text-sm leading-6 text-[#f4f1e8]">
           A web presence that feels designed, engineered, and ready to scale.
         </p>
       </div>
@@ -103,29 +121,25 @@ function HeroCopy({
 function MotionNotes({ finalReveal }: { finalReveal: number }) {
   return (
     <div className="hidden gap-3 lg:grid">
-      {[
-        ["01", "Strategy", "Position the offer before the interface takes shape."],
-        ["02", "Motion", "Give the brand a launch moment with restraint."],
-        ["03", "Automation", "Connect the site to the workflows behind it."],
-      ].map(([index, title, body], itemIndex) => {
+      {motionNotes.map(({ body, index, title }, itemIndex) => {
         const isFinal = finalReveal > 0.5 && itemIndex === 2;
 
         return (
           <article
             key={index}
-            className="border-l border-t py-3 pl-4 pr-4 backdrop-blur-md transition duration-500"
+            className="border-l border-t py-3.5 pl-4 pr-4 backdrop-blur-md transition duration-500"
             style={{
               backgroundColor: isFinal
-                ? "rgba(5,6,9,0.88)"
-                : "rgba(5,6,9,0.68)",
+                ? "rgba(5,6,9,0.84)"
+                : "rgba(5,6,9,0.56)",
               borderColor: isFinal ? "#f2f0e8" : "rgba(255,255,255,0.12)",
-              opacity: itemIndex === 2 ? 0.38 + finalReveal * 0.62 : 0.72,
+              opacity: itemIndex === 2 ? 0.46 + finalReveal * 0.54 : 0.76,
             }}
           >
-            <p className="text-[0.68rem] uppercase tracking-[0.16em] text-muted">
+            <p className="text-[0.7rem] uppercase tracking-normal text-muted">
               {index}
             </p>
-            <h2 className="mt-2 text-xl font-medium leading-tight">{title}</h2>
+            <h2 className="mt-2 text-lg font-medium leading-tight">{title}</h2>
             <p className="mt-2 text-sm leading-6 text-muted">{body}</p>
           </article>
         );
@@ -139,10 +153,10 @@ function CtaSection() {
     <section className="grid min-h-screen border-t border-white/10 bg-[#050609] px-6 py-24 text-foreground md:px-10 md:py-32">
       <div className="mx-auto grid w-full max-w-7xl gap-10 self-center lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
         <div>
-          <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+          <p className="text-[0.7rem] uppercase tracking-normal text-muted">
             Production direction
           </p>
-          <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1] md:text-6xl">
+          <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.03] md:text-6xl">
             Turn the placeholder mark into a real C4 launch signature.
           </h2>
         </div>
@@ -176,10 +190,10 @@ function ReducedMotionLab04({ compact = false }: { compact?: boolean }) {
 
         <div className="relative z-10 mx-auto grid min-h-[calc(100vh-3.5rem)] max-w-7xl items-end gap-10 pb-10 pt-24 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="text-[0.68rem] uppercase tracking-[0.18em] text-muted">
+            <p className="text-[0.7rem] uppercase tracking-normal text-muted">
               Reduced motion
             </p>
-            <h1 className="mt-5 max-w-2xl text-5xl font-semibold leading-[0.98] md:text-6xl">
+            <h1 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.02] sm:text-5xl md:text-6xl">
               Websites that move like products.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-muted md:text-lg md:leading-8">
@@ -228,7 +242,7 @@ export function Lab043DLogoHero() {
           <div className="pointer-events-none relative z-20 mx-auto grid h-full max-w-7xl grid-rows-[auto_1fr_auto] px-6 py-7 md:px-10">
             <Header />
 
-            <div className="grid min-h-0 items-center gap-8 py-10 lg:grid-cols-[390px_1fr_360px]">
+            <div className="grid min-h-0 items-center gap-8 py-10 lg:grid-cols-[410px_1fr_330px]">
               <HeroCopy copyReveal={copyReveal} finalReveal={finalReveal} />
               <div className="hidden lg:block" />
               <MotionNotes finalReveal={finalReveal} />
@@ -242,7 +256,7 @@ export function Lab043DLogoHero() {
               </div>
               <div className="h-px overflow-hidden bg-white/10">
                 <div
-                  className="h-full origin-left bg-[#d8dee9]"
+                  className="h-full origin-left bg-[#e8dfd0]"
                   style={{ transform: `scaleX(${progress})` }}
                 />
               </div>
